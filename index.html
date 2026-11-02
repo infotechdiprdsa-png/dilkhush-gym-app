@@ -12,9 +12,6 @@
   <title>Dilkhush Saini Fitness & Gym Tracker</title>
 
   <style>
-    /* ==========================================================================
-       1. ROYAL INDIGO-VIOLET THEME & ANTI-COPY HARDENING
-       ========================================================================== */
     :root {
       --bg-primary: #1E1B4B;
       --bg-secondary: #2E2A6E;
@@ -78,9 +75,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ==========================================================================
-       2. ADMIN LOGIN OVERLAY SCREEN
-       ========================================================================== */
     .login-overlay {
       position: fixed;
       inset: 0;
@@ -183,9 +177,6 @@
       display: none;
     }
 
-    /* ==========================================================================
-       3. APP SHELL & HEADER
-       ========================================================================== */
     .app-container {
       max-width: 500px;
       margin: 0 auto;
@@ -277,9 +268,6 @@
       font-size: 15px;
     }
 
-    /* ==========================================================================
-       4. CARDS, GRIDS & REUSABLE UI COMPONENTS
-       ========================================================================== */
     .view-section {
       display: none;
       padding: 16px;
@@ -358,9 +346,6 @@
       font-weight: 700;
     }
 
-    /* ==========================================================================
-       5. DAILY ATTENDANCE QUICK ACTION BUTTONS
-       ========================================================================== */
     .attendance-btn-group {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -423,9 +408,6 @@
       display: block;
     }
 
-    /* ==========================================================================
-       6. WORKOUT ROUTINE & EXERCISE LIST (NO DELETE BUTTON)
-       ========================================================================== */
     .day-selector {
       display: flex;
       gap: 8px;
@@ -575,9 +557,6 @@
       margin-top: 2px;
     }
 
-    /* ==========================================================================
-       7. MONTHLY ATTENDANCE CALENDAR
-       ========================================================================== */
     .cal-controls {
       display: flex;
       align-items: center;
@@ -657,9 +636,6 @@
       color: #FDE68A;
     }
 
-    /* ==========================================================================
-       8. FORMS, BUTTONS & TIMERS
-       ========================================================================== */
     .form-input {
       width: 100%;
       padding: 12px 14px;
@@ -740,9 +716,6 @@
       border: 1px solid rgba(16, 185, 129, 0.4);
     }
 
-    /* ==========================================================================
-       9. BOTTOM NAVIGATION BAR
-       ========================================================================== */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -790,7 +763,6 @@
       background: rgba(245, 158, 11, 0.16);
     }
 
-    /* Toast Notification */
     .toast-msg {
       position: fixed;
       top: 76px;
@@ -818,9 +790,6 @@
 </head>
 <body>
 
-  <!-- ========================================================================
-       ADMIN LOGIN SCREEN (OPENS ONLY WITH ADMIN MOBILE & HIDDEN OTP)
-       ======================================================================== -->
   <div id="admin-login-overlay" class="login-overlay">
     <div class="login-card">
       <div class="login-logo">DS</div>
@@ -849,14 +818,9 @@
     </div>
   </div>
 
-  <!-- ========================================================================
-       MAIN APPLICATION CONTAINER
-       ======================================================================== -->
   <div class="app-container">
-    <!-- Toast Popup -->
     <div id="toast" class="toast-msg">सेव किया गया!</div>
 
-    <!-- Top Sticky Header -->
     <header class="app-header">
       <div class="profile-group">
         <div class="avatar-badge">DS</div>
@@ -874,11 +838,7 @@
       </div>
     </header>
 
-    <!-- ======================================================================
-         TAB 1: HOME DASHBOARD & DAILY ATTENDANCE
-         ====================================================================== -->
     <section id="tab-home" class="view-section active">
-      <!-- Attendance Summary Row -->
       <div class="stats-grid">
         <div class="stat-box">
           <span class="stat-val" style="color: #6EE7B7;" id="stat-present">0</span>
@@ -894,7 +854,6 @@
         </div>
       </div>
 
-      <!-- Daily Attendance Card -->
       <div class="glass-card">
         <div class="card-header">
           <div>
@@ -919,7 +878,6 @@
           </button>
         </div>
 
-        <!-- Absent Reason Input -->
         <div id="absent-reason-container" class="absent-reason-box">
           <label style="font-size:12px; color:#FECDD3; font-weight:700; display:block; margin-bottom:6px;">
             आज जिम न जाने का कारण (वैकल्पिक):
@@ -931,7 +889,6 @@
         </div>
       </div>
 
-      <!-- Today's Scheduled Workout Preview Card -->
       <div class="glass-card">
         <div class="card-header">
           <div>
@@ -946,7 +903,6 @@
         <div id="home-workout-preview" style="font-size:13px; color:var(--text-muted);"></div>
       </div>
 
-      <!-- Daily Hydration & Nutrition Tracker -->
       <div class="glass-card">
         <div class="card-header">
           <div class="card-title">💧 दैनिक पानी और डाइट ट्रैकर</div>
@@ -963,9 +919,6 @@
       </div>
     </section>
 
-    <!-- ======================================================================
-         TAB 2: DAILY WORKOUT & SPLIT TRACKER
-         ====================================================================== -->
     <section id="tab-workout" class="view-section">
       <div class="day-selector" id="day-chips-container"></div>
 
@@ -982,7 +935,6 @@
           <div class="progress-bar-fill" id="workout-progress-bar"></div>
         </div>
 
-        <!-- Exercise List Container (Clean without Delete Cross Buttons) -->
         <div id="exercise-list-container"></div>
 
         <button type="button" class="btn-primary" style="margin-top:8px;" onclick="finishWorkoutSession()">
@@ -990,7 +942,6 @@
         </button>
       </div>
 
-      <!-- Add New Custom Exercise to Selected Day -->
       <div class="glass-card">
         <div class="card-title" style="margin-bottom:12px;">➕ इस दिन में नई एक्सरसाइज जोड़ें</div>
         <input type="text" id="new-ex-name" class="form-input" placeholder="एक्सरसाइज का नाम (जैसे: Incline Dumbbell Press)">
@@ -1003,9 +954,6 @@
       </div>
     </section>
 
-    <!-- ======================================================================
-         TAB 3: MONTHLY ATTENDANCE & ABSENT LOG CALENDAR
-         ====================================================================== -->
     <section id="tab-calendar" class="view-section">
       <div class="glass-card">
         <div class="cal-controls">
@@ -1029,7 +977,6 @@
         </div>
       </div>
 
-      <!-- Selected Date Editor Card -->
       <div class="glass-card" id="selected-date-card">
         <div class="card-title" id="selected-date-heading">तारीख का विवरण</div>
         <p style="font-size:12px; color:var(--text-muted); margin:4px 0 12px;" id="selected-date-reason">स्टेटस बदलने के लिए नीचे बटन दबाएं:</p>
@@ -1041,11 +988,7 @@
       </div>
     </section>
 
-    <!-- ======================================================================
-         TAB 4: GYM TOOLS & CLOUD AUTO-RESTORE
-         ====================================================================== -->
     <section id="tab-tools" class="view-section">
-      <!-- Silent Rest Timer -->
       <div class="glass-card">
         <div class="card-header">
           <div>
@@ -1069,7 +1012,6 @@
         </div>
       </div>
 
-      <!-- Cloud Sync & Account Recovery -->
       <div class="glass-card">
         <div class="card-header">
           <div>
@@ -1088,7 +1030,6 @@
         </div>
       </div>
 
-      <!-- 1RM Strength Calculator -->
       <div class="glass-card">
         <div class="card-title" style="margin-bottom:10px;">💪 1RM (अधिकतम स्ट्रेंथ) कैलकुलेटर</div>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
@@ -1102,9 +1043,6 @@
       </div>
     </section>
 
-    <!-- ======================================================================
-         BOTTOM NAVIGATION BAR
-         ====================================================================== -->
     <nav class="bottom-nav">
       <button type="button" class="nav-item active" data-target="tab-home" onclick="switchTab('tab-home')">
         <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V9.5z"/></svg>
@@ -1126,12 +1064,8 @@
   </div>
 
   <script>
-    /* ==========================================================================
-       1. STRICT SECURITY & ANTI-COPY / ANTI-ZOOM INTERCEPTION
-       ========================================================================== */
     (function enforceNativeAppFeel() {
       'use strict';
-
       const isEditableField = (el) => {
         if (!el) return false;
         const tag = el.tagName ? el.tagName.toUpperCase() : '';
@@ -1174,25 +1108,13 @@
       }, { passive: false });
     })();
 
-    /* ==========================================================================
-       2. SILENT AUDIO STUB (ALL BEEPS COMPLETELY DISABLED AS REQUESTED)
-       ========================================================================== */
-    function playSynthBeep() {
-      // 100% Silent — Beep sound permanently turned off
-    }
+    function playSynthBeep() {}
+    function triggerTimerAlarmPattern() {}
 
-    function triggerTimerAlarmPattern() {
-      // Silent visual notification only
-    }
-
-    /* ==========================================================================
-       3. ADMIN AUTHENTICATION & CLOUD SYNC VAULT (8306980270 + HIDDEN OTP)
-       ========================================================================== */
     const STORAGE_KEY = 'dilkhush_saini_gym_pro_v2_8306980270';
     const AUTH_SESSION_KEY = 'dilkhush_admin_logged_in_v2';
-    // Encoded credentials so password is never shown on screen
-    const ADMIN_MOB_HASH = 'ODMwNjk4MDI3MA=='; // 8306980270
-    const ADMIN_OTP_HASH = 'Nzc0MjEx';         // 774211
+    const ADMIN_MOB_HASH = 'ODMwNjk4MDI3MA==';
+    const ADMIN_OTP_HASH = 'Nzc0MjEx';
     const CLOUD_VAULT_ENDPOINT = 'https://kvdb.io/A6Xy9kP3mQv8Wz2L4nRt7B/ds_gym_vault_8306980270_774211';
 
     async function handleAdminLogin(e) {
@@ -1207,7 +1129,6 @@
         document.getElementById('login-otp-input').value = '';
         document.getElementById('admin-login-overlay').classList.add('hidden');
 
-        // Automatically restore from cloud if local storage was wiped/reinstalled
         const hasLocalRecords = Object.keys(appState.attendance || {}).length > 0;
         if (!hasLocalRecords) {
           await restoreFromCloudVault(false);
@@ -1269,19 +1190,18 @@
       return false;
     }
 
-    /* ==========================================================================
-       4. DEFAULT WORKOUT DATA & STATE ENGINE
-       ========================================================================== */
     const DEFAULT_SPLIT = {
       1: {
         dayName: 'सोमवार',
         title: 'चेस्ट और ट्राइसेप्स (Chest & Triceps)',
         exercises: [
-          { id: 'm1', name: 'Flat Barbell Bench Press', sets: 4, reps: '10-12', weight: 50, done: false },
+          { id: 'm1', name: 'Flat Bench Press', sets: 4, reps: '10-12', weight: 50, done: false },
           { id: 'm2', name: 'Incline Dumbbell Press', sets: 4, reps: '12', weight: 20, done: false },
-          { id: 'm3', name: 'Pec Deck / Cable Crossover', sets: 3, reps: '15', weight: 25, done: false },
-          { id: 'm4', name: 'Tricep Rope Pushdown', sets: 4, reps: '12-15', weight: 20, done: false },
-          { id: 'm5', name: 'Overhead Dumbbell Extension', sets: 3, reps: '12', weight: 18, done: false }
+          { id: 'm3', name: 'Peck Deck / Cable Crossover', sets: 3, reps: '15', weight: 25, done: false },
+          { id: 'm4', name: 'Push-ups', sets: 3, reps: '12-15', weight: 0, done: false },
+          { id: 'm5', name: 'Cable Pushdown', sets: 3, reps: '12-15', weight: 20, done: false },
+          { id: 'm6', name: 'Overhead Dumbbell Extension', sets: 3, reps: '12', weight: 18, done: false },
+          { id: 'm7', name: 'Bench Dips', sets: 3, reps: '12', weight: 0, done: false }
         ]
       },
       2: {
@@ -1391,9 +1311,6 @@
       setTimeout(() => t.classList.remove('show'), 2200);
     }
 
-    /* ==========================================================================
-       5. NAVIGATION & UI RENDERING
-       ========================================================================== */
     let activeWorkoutDay = new Date().getDay();
     let calYear = new Date().getFullYear();
     let calMonth = new Date().getMonth();
@@ -1412,9 +1329,6 @@
       if (tabId === 'tab-calendar') renderCalendarTab();
     }
 
-    /* ==========================================================================
-       6. HOME DASHBOARD & DAILY ATTENDANCE LOGIC
-       ========================================================================== */
     function markTodayAttendance(status) {
       const todayKey = getDateKey(new Date());
       const existing = appState.attendance[todayKey] || {};
@@ -1472,7 +1386,6 @@
         if (entry && entry.status === 'present') {
           streak++;
         } else if (entry && entry.status === 'rest') {
-          // Rest day preserves streak
         } else {
           if (i > 0) break;
         }
@@ -1547,9 +1460,6 @@
       renderHomeDashboard();
     }
 
-    /* ==========================================================================
-       7. WORKOUT ROUTINE & CUSTOM EXERCISE ENGINE (NO DELETE BUTTON)
-       ========================================================================== */
     function renderWorkoutTab() {
       const dayOrder = [1, 2, 3, 4, 5, 6, 0];
       const chipsWrap = document.getElementById('day-chips-container');
@@ -1661,9 +1571,6 @@
       switchTab('tab-home');
     }
 
-    /* ==========================================================================
-       8. INTERACTIVE MONTHLY ATTENDANCE CALENDAR
-       ========================================================================== */
     function changeMonth(delta) {
       calMonth += delta;
       if (calMonth > 11) { calMonth = 0; calYear++; }
@@ -1729,9 +1636,6 @@
       showToast(`${selectedCalDateKey}: ${status.toUpperCase()} सेव किया गया`);
     }
 
-    /* ==========================================================================
-       9. SILENT REST TIMER, 1RM CALCULATOR & JSON BACKUP
-       ========================================================================== */
     let timerDuration = 60;
     let timerRemaining = 60;
     let timerInterval = null;
@@ -1818,7 +1722,6 @@
       reader.readAsText(file);
     }
 
-    // Initialize App & Check Admin Session
     window.addEventListener('DOMContentLoaded', async () => {
       loadState();
       if (localStorage.getItem(AUTH_SESSION_KEY) === 'verified') {
