@@ -7,27 +7,27 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Dilkhush Gym">
-  <meta name="theme-color" content="#0B0F17">
+  <meta name="theme-color" content="#1E1B4B">
   <meta name="format-detection" content="telephone=no">
   <title>Dilkhush Saini Fitness & Gym Tracker</title>
 
   <style>
     /* ==========================================================================
-       1. ANTI-COPY, ANTI-SELECT & WEBVIEW HARDENING RULES
+       1. ROYAL INDIGO-VIOLET THEME & ANTI-COPY HARDENING
        ========================================================================== */
     :root {
-      --bg-primary: #0B0F17;
-      --bg-secondary: #151C28;
-      --bg-card: rgba(25, 34, 49, 0.88);
-      --border-glass: rgba(255, 255, 255, 0.08);
+      --bg-primary: #1E1B4B;
+      --bg-secondary: #2E2A6E;
+      --bg-card: rgba(49, 46, 129, 0.72);
+      --border-glass: rgba(255, 255, 255, 0.16);
       --gold-primary: #F59E0B;
-      --gold-glow: rgba(245, 158, 11, 0.25);
-      --accent-blue: #3B82F6;
+      --gold-glow: rgba(245, 158, 11, 0.35);
+      --accent-cyan: #38BDF8;
       --present-green: #10B981;
-      --absent-red: #EF4444;
-      --rest-amber: #F59E0B;
-      --text-main: #F8FAFC;
-      --text-muted: #94A3B8;
+      --absent-red: #F43F5E;
+      --rest-amber: #FBBF24;
+      --text-main: #FFFFFF;
+      --text-muted: #CBD5E1;
       --safe-bottom: env(safe-area-inset-bottom, 16px);
     }
 
@@ -35,19 +35,15 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      /* Strict Disabling of Text Selection & Highlighting Across All Engines */
       -webkit-user-select: none !important;
       -moz-user-select: none !important;
       -ms-user-select: none !important;
       user-select: none !important;
-      /* Disable iOS Long-Press Action Callout & Dragging */
       -webkit-touch-callout: none !important;
       -webkit-user-drag: none !important;
-      /* Eliminate Mobile Tap Flash Highlight */
       -webkit-tap-highlight-color: transparent !important;
     }
 
-    /* Selective Re-enabling of Selection ONLY inside Input Fields for Logging */
     input, textarea, select {
       -webkit-user-select: text !important;
       -moz-user-select: text !important;
@@ -63,14 +59,15 @@
     }
 
     input::selection, textarea::selection {
-      background: rgba(245, 158, 11, 0.35);
+      background: rgba(56, 189, 248, 0.35);
       color: #fff;
     }
 
     html, body {
       width: 100%;
       height: 100%;
-      background-color: var(--bg-primary);
+      background: linear-gradient(160deg, #1E1B4B 0%, #312E81 50%, #1E3A8A 100%);
+      background-attachment: fixed;
       color: var(--text-main);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       font-size: 16px;
@@ -81,28 +78,132 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* App Shell Layout */
+    /* ==========================================================================
+       2. ADMIN LOGIN OVERLAY SCREEN
+       ========================================================================== */
+    .login-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: radial-gradient(circle at 50% 20%, #4338CA 0%, #1E1B4B 75%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-overlay.hidden {
+      display: none !important;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 400px;
+      background: rgba(49, 46, 129, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 24px;
+      padding: 28px 22px;
+      box-shadow: 0 20px 50px rgba(15, 23, 42, 0.6);
+      text-align: center;
+    }
+
+    .login-logo {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 14px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, #F59E0B 0%, #EA580C 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 900;
+      color: #fff;
+      box-shadow: 0 8px 25px rgba(245, 158, 11, 0.45);
+      border: 2px solid rgba(255, 255, 255, 0.35);
+    }
+
+    .login-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 4px;
+    }
+
+    .login-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 22px;
+    }
+
+    .login-field-group {
+      text-align: left;
+      margin-bottom: 16px;
+    }
+
+    .login-field-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: #E0E7FF;
+      margin-bottom: 6px;
+      letter-spacing: 0.4px;
+    }
+
+    .login-input {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(15, 23, 42, 0.55);
+      color: #FFFFFF;
+      font-size: 16px;
+      font-weight: 700;
+      outline: none;
+      letter-spacing: 1px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .login-input:focus {
+      border-color: var(--gold-primary);
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25);
+    }
+
+    .login-error {
+      color: #FDA4AF;
+      background: rgba(244, 63, 94, 0.2);
+      border: 1px solid rgba(244, 63, 94, 0.4);
+      padding: 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      display: none;
+    }
+
+    /* ==========================================================================
+       3. APP SHELL & HEADER
+       ========================================================================== */
     .app-container {
       max-width: 500px;
       margin: 0 auto;
       min-height: 100vh;
-      padding-bottom: calc(88px + var(--safe-bottom));
+      padding-bottom: calc(92px + var(--safe-bottom));
       position: relative;
-      background: radial-gradient(circle at 50% 0%, rgba(245, 158, 11, 0.12) 0%, transparent 60%), var(--bg-primary);
+      background: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.35) 0%, transparent 65%);
     }
 
-    /* ==========================================================================
-       2. PREMIUM HEADER & PROFILE BAR
-       ========================================================================== */
     .app-header {
       position: sticky;
       top: 0;
       z-index: 50;
-      background: rgba(11, 15, 23, 0.85);
+      background: rgba(30, 27, 75, 0.88);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border-glass);
-      padding: 14px 18px;
+      padding: 14px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -118,15 +219,15 @@
       width: 46px;
       height: 46px;
       border-radius: 14px;
-      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+      background: linear-gradient(135deg, #F59E0B 0%, #EA580C 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 800;
+      font-weight: 900;
       font-size: 18px;
-      color: #0B0F17;
+      color: #FFFFFF;
       box-shadow: 0 4px 14px var(--gold-glow);
-      border: 2px solid rgba(255, 255, 255, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.3);
       flex-shrink: 0;
     }
 
@@ -134,32 +235,50 @@
       font-size: 18px;
       font-weight: 800;
       letter-spacing: 0.3px;
-      background: linear-gradient(90deg, #FFFFFF 0%, #FDE68A 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: #FFFFFF;
     }
 
     .profile-text p {
       font-size: 12px;
       color: var(--text-muted);
-      font-weight: 500;
+      font-weight: 600;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .streak-pill {
-      background: rgba(245, 158, 11, 0.14);
-      border: 1px solid rgba(245, 158, 11, 0.4);
+      background: rgba(245, 158, 11, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.5);
       padding: 6px 12px;
       border-radius: 20px;
       display: flex;
       align-items: center;
-      gap: 6px;
-      font-weight: 700;
+      gap: 5px;
+      font-weight: 800;
       font-size: 13px;
-      color: #FBBF24;
+      color: #FDE68A;
+    }
+
+    .logout-icon-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--border-glass);
+      color: #E2E8F0;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 15px;
     }
 
     /* ==========================================================================
-       3. CARDS, GRIDS & REUSABLE UI COMPONENTS
+       4. CARDS, GRIDS & REUSABLE UI COMPONENTS
        ========================================================================== */
     .view-section {
       display: none;
@@ -178,11 +297,13 @@
 
     .glass-card {
       background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--border-glass);
-      border-radius: 18px;
+      border-radius: 20px;
       padding: 18px;
       margin-bottom: 16px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.35);
     }
 
     .card-header {
@@ -190,11 +311,12 @@
       align-items: center;
       justify-content: space-between;
       margin-bottom: 14px;
+      gap: 10px;
     }
 
     .card-title {
       font-size: 16px;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--text-main);
       display: flex;
       align-items: center;
@@ -204,6 +326,7 @@
     .card-subtitle {
       font-size: 12px;
       color: var(--text-muted);
+      margin-top: 2px;
     }
 
     .stats-grid {
@@ -214,16 +337,17 @@
     }
 
     .stat-box {
-      background: rgba(15, 23, 42, 0.75);
+      background: rgba(30, 27, 75, 0.72);
       border: 1px solid var(--border-glass);
-      border-radius: 14px;
+      border-radius: 16px;
       padding: 12px 10px;
       text-align: center;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
     }
 
     .stat-val {
-      font-size: 20px;
-      font-weight: 800;
+      font-size: 21px;
+      font-weight: 900;
       display: block;
       margin-bottom: 2px;
     }
@@ -231,11 +355,11 @@
     .stat-lbl {
       font-size: 11px;
       color: var(--text-muted);
-      font-weight: 600;
+      font-weight: 700;
     }
 
     /* ==========================================================================
-       4. DAILY ATTENDANCE QUICK ACTION BUTTONS
+       5. DAILY ATTENDANCE QUICK ACTION BUTTONS
        ========================================================================== */
     .attendance-btn-group {
       display: grid;
@@ -245,10 +369,10 @@
     }
 
     .att-btn {
-      min-height: 52px;
+      min-height: 54px;
       border-radius: 14px;
       border: 1px solid var(--border-glass);
-      background: rgba(30, 41, 59, 0.7);
+      background: rgba(30, 27, 75, 0.65);
       color: var(--text-main);
       font-weight: 700;
       font-size: 13px;
@@ -266,33 +390,33 @@
     }
 
     .att-btn.active-present {
-      background: rgba(16, 185, 129, 0.2);
-      border-color: var(--present-green);
-      color: #34D399;
-      box-shadow: 0 0 16px rgba(16, 185, 129, 0.2);
+      background: rgba(16, 185, 129, 0.28);
+      border-color: #34D399;
+      color: #6EE7B7;
+      box-shadow: 0 0 18px rgba(16, 185, 129, 0.3);
     }
 
     .att-btn.active-absent {
-      background: rgba(239, 68, 68, 0.2);
-      border-color: var(--absent-red);
-      color: #F87171;
-      box-shadow: 0 0 16px rgba(239, 68, 68, 0.2);
+      background: rgba(244, 63, 94, 0.28);
+      border-color: #FB7185;
+      color: #FDA4AF;
+      box-shadow: 0 0 18px rgba(244, 63, 94, 0.3);
     }
 
     .att-btn.active-rest {
-      background: rgba(245, 158, 11, 0.2);
-      border-color: var(--rest-amber);
-      color: #FBBF24;
-      box-shadow: 0 0 16px rgba(245, 158, 11, 0.2);
+      background: rgba(245, 158, 11, 0.28);
+      border-color: #FBBF24;
+      color: #FDE68A;
+      box-shadow: 0 0 18px rgba(245, 158, 11, 0.3);
     }
 
     .absent-reason-box {
       margin-top: 12px;
       display: none;
-      background: rgba(239, 68, 68, 0.08);
-      border: 1px solid rgba(239, 68, 68, 0.3);
+      background: rgba(244, 63, 94, 0.14);
+      border: 1px solid rgba(244, 63, 94, 0.4);
       padding: 12px;
-      border-radius: 12px;
+      border-radius: 14px;
     }
 
     .absent-reason-box.show {
@@ -300,7 +424,7 @@
     }
 
     /* ==========================================================================
-       5. WORKOUT ROUTINE & EXERCISE LIST
+       6. WORKOUT ROUTINE & EXERCISE LIST (NO DELETE BUTTON)
        ========================================================================== */
     .day-selector {
       display: flex;
@@ -316,12 +440,12 @@
     }
 
     .day-chip {
-      padding: 10px 16px;
+      padding: 10px 18px;
       border-radius: 14px;
-      background: var(--bg-secondary);
+      background: rgba(30, 27, 75, 0.75);
       border: 1px solid var(--border-glass);
       color: var(--text-muted);
-      font-weight: 700;
+      font-weight: 800;
       font-size: 13px;
       white-space: nowrap;
       cursor: pointer;
@@ -329,19 +453,20 @@
     }
 
     .day-chip.active {
-      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
-      color: #0B0F17;
-      border-color: transparent;
-      box-shadow: 0 4px 12px var(--gold-glow);
+      background: linear-gradient(135deg, #F59E0B 0%, #EA580C 100%);
+      color: #FFFFFF;
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 4px 14px var(--gold-glow);
     }
 
     .progress-bar-wrap {
       width: 100%;
-      height: 10px;
-      background: rgba(255, 255, 255, 0.07);
+      height: 11px;
+      background: rgba(15, 23, 42, 0.55);
       border-radius: 99px;
       overflow: hidden;
-      margin: 10px 0 14px;
+      margin: 10px 0 16px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .progress-bar-fill {
@@ -353,20 +478,20 @@
     }
 
     .exercise-item {
-      background: rgba(15, 23, 42, 0.65);
+      background: rgba(30, 27, 75, 0.65);
       border: 1px solid var(--border-glass);
-      border-radius: 14px;
+      border-radius: 16px;
       padding: 14px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
       transition: border-color 0.2s ease, background 0.2s ease;
     }
 
     .exercise-item.completed {
-      border-color: rgba(16, 185, 129, 0.5);
-      background: rgba(16, 185, 129, 0.08);
+      border-color: #34D399;
+      background: rgba(16, 185, 129, 0.16);
     }
 
     .ex-top {
@@ -380,20 +505,21 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      flex: 1;
+      width: 100%;
       cursor: pointer;
     }
 
     .custom-checkbox {
       width: 28px;
       height: 28px;
-      border-radius: 8px;
+      border-radius: 9px;
       border: 2px solid var(--gold-primary);
+      background: rgba(15, 23, 42, 0.4);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 16px;
-      color: #0B0F17;
+      color: #FFFFFF;
       font-weight: 900;
       flex-shrink: 0;
       transition: all 0.15s ease;
@@ -407,13 +533,13 @@
 
     .ex-name {
       font-size: 15px;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--text-main);
     }
 
     .exercise-item.completed .ex-name {
       text-decoration: line-through;
-      color: var(--text-muted);
+      color: #A7F3D0;
     }
 
     .ex-inputs {
@@ -423,10 +549,10 @@
     }
 
     .input-mini-group {
-      background: rgba(11, 15, 23, 0.7);
-      border: 1px solid var(--border-glass);
-      border-radius: 10px;
-      padding: 6px 8px;
+      background: rgba(15, 23, 42, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 7px 10px;
       display: flex;
       flex-direction: column;
     }
@@ -435,13 +561,13 @@
       font-size: 10px;
       color: var(--text-muted);
       text-transform: uppercase;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .input-mini-group input {
       background: transparent;
       border: none;
-      color: var(--gold-primary);
+      color: #FBBF24;
       font-weight: 800;
       font-size: 15px;
       width: 100%;
@@ -449,22 +575,8 @@
       margin-top: 2px;
     }
 
-    .del-ex-btn {
-      background: rgba(239, 68, 68, 0.15);
-      border: none;
-      color: #F87171;
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      font-size: 14px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
     /* ==========================================================================
-       6. MONTHLY ATTENDANCE CALENDAR
+       7. MONTHLY ATTENDANCE CALENDAR
        ========================================================================== */
     .cal-controls {
       display: flex;
@@ -474,7 +586,7 @@
     }
 
     .cal-nav-btn {
-      background: var(--bg-secondary);
+      background: rgba(30, 27, 75, 0.8);
       border: 1px solid var(--border-glass);
       color: var(--text-main);
       width: 40px;
@@ -491,7 +603,7 @@
       text-align: center;
       font-size: 11px;
       color: var(--text-muted);
-      font-weight: 700;
+      font-weight: 800;
       margin-bottom: 8px;
     }
 
@@ -504,14 +616,14 @@
     .cal-day {
       aspect-ratio: 1;
       border-radius: 12px;
-      background: rgba(15, 23, 42, 0.6);
+      background: rgba(30, 27, 75, 0.6);
       border: 1px solid var(--border-glass);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       font-size: 13px;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
       position: relative;
     }
@@ -523,47 +635,46 @@
     }
 
     .cal-day.today {
-      border: 2px solid var(--accent-blue);
+      border: 2px solid var(--accent-cyan);
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
     }
 
     .cal-day.status-present {
-      background: rgba(16, 185, 129, 0.22);
-      border-color: var(--present-green);
-      color: #34D399;
+      background: rgba(16, 185, 129, 0.3);
+      border-color: #34D399;
+      color: #6EE7B7;
     }
 
     .cal-day.status-absent {
-      background: rgba(239, 68, 68, 0.22);
-      border-color: var(--absent-red);
-      color: #F87171;
+      background: rgba(244, 63, 94, 0.3);
+      border-color: #FB7185;
+      color: #FDA4AF;
     }
 
     .cal-day.status-rest {
-      background: rgba(245, 158, 11, 0.22);
-      border-color: var(--rest-amber);
-      color: #FBBF24;
-    }
-
-    .cal-dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      margin-top: 2px;
+      background: rgba(245, 158, 11, 0.3);
+      border-color: #FBBF24;
+      color: #FDE68A;
     }
 
     /* ==========================================================================
-       7. FORMS, BUTTONS & TIMERS
+       8. FORMS, BUTTONS & TIMERS
        ========================================================================== */
     .form-input {
       width: 100%;
       padding: 12px 14px;
       border-radius: 12px;
       border: 1px solid var(--border-glass);
-      background: rgba(11, 15, 23, 0.8);
+      background: rgba(15, 23, 42, 0.55);
       color: var(--text-main);
       font-size: 14px;
+      font-weight: 600;
       outline: none;
       margin-bottom: 10px;
+    }
+
+    .form-input::placeholder {
+      color: #94A3B8;
     }
 
     .form-input:focus {
@@ -575,12 +686,12 @@
       min-height: 48px;
       border-radius: 14px;
       border: none;
-      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
-      color: #0B0F17;
+      background: linear-gradient(135deg, #F59E0B 0%, #EA580C 100%);
+      color: #FFFFFF;
       font-weight: 800;
       font-size: 15px;
       cursor: pointer;
-      box-shadow: 0 4px 14px var(--gold-glow);
+      box-shadow: 0 4px 16px var(--gold-glow);
       transition: transform 0.12s ease;
     }
 
@@ -592,7 +703,7 @@
       font-size: 48px;
       font-weight: 900;
       text-align: center;
-      color: var(--gold-primary);
+      color: #FDE68A;
       font-variant-numeric: tabular-nums;
       margin: 10px 0;
       letter-spacing: 2px;
@@ -608,7 +719,7 @@
     .preset-btn {
       padding: 10px;
       border-radius: 10px;
-      background: var(--bg-secondary);
+      background: rgba(30, 27, 75, 0.75);
       border: 1px solid var(--border-glass);
       color: var(--text-main);
       font-weight: 700;
@@ -616,8 +727,21 @@
       cursor: pointer;
     }
 
+    .sync-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 99px;
+      background: rgba(16, 185, 129, 0.2);
+      color: #6EE7B7;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+
     /* ==========================================================================
-       8. BOTTOM NAVIGATION BAR
+       9. BOTTOM NAVIGATION BAR
        ========================================================================== */
     .bottom-nav {
       position: fixed;
@@ -626,7 +750,7 @@
       transform: translateX(-50%);
       width: 100%;
       max-width: 500px;
-      background: rgba(15, 23, 42, 0.94);
+      background: rgba(30, 27, 75, 0.94);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
       border-top: 1px solid var(--border-glass);
@@ -647,7 +771,7 @@
       gap: 4px;
       padding: 6px 0;
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
       border-radius: 12px;
       transition: color 0.2s ease, background 0.2s ease;
@@ -662,8 +786,8 @@
     }
 
     .nav-item.active {
-      color: var(--gold-primary);
-      background: rgba(245, 158, 11, 0.1);
+      color: #FBBF24;
+      background: rgba(245, 158, 11, 0.16);
     }
 
     /* Toast Notification */
@@ -672,13 +796,13 @@
       top: 76px;
       left: 50%;
       transform: translateX(-50%) translateY(-20px);
-      background: #10B981;
-      color: #0B0F17;
+      background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+      color: #FFFFFF;
       font-weight: 800;
       font-size: 13px;
       padding: 10px 20px;
       border-radius: 99px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
       opacity: 0;
       pointer-events: none;
       transition: all 0.25s ease;
@@ -694,6 +818,40 @@
 </head>
 <body>
 
+  <!-- ========================================================================
+       ADMIN LOGIN SCREEN (OPENS ONLY WITH ADMIN MOBILE & HIDDEN OTP)
+       ======================================================================== -->
+  <div id="admin-login-overlay" class="login-overlay">
+    <div class="login-card">
+      <div class="login-logo">DS</div>
+      <div class="login-title">दिलखुश सैनी फिटनेस</div>
+      <div class="login-sub">सुरक्षित एडमिन लॉगिन एवं क्लाउड रिकवरी</div>
+
+      <div id="login-error-box" class="login-error">
+        अमान्य एडमिन मोबाइल नंबर या गुप्त पासवर्ड!
+      </div>
+
+      <form onsubmit="handleAdminLogin(event)" autocomplete="off">
+        <div class="login-field-group">
+          <label>📱 एडमिन मोबाइल नंबर</label>
+          <input type="tel" id="login-mobile-input" class="login-input" maxlength="10" inputmode="numeric" placeholder="10 अंकों का मोबाइल नंबर" required>
+        </div>
+
+        <div class="login-field-group">
+          <label>🔒 स्थाई गुप्त OTP पासवर्ड</label>
+          <input type="password" id="login-otp-input" class="login-input" maxlength="6" inputmode="numeric" placeholder="••••••" autocomplete="new-password" required>
+        </div>
+
+        <button type="submit" class="btn-primary" style="margin-top: 6px;">
+          🔓 लॉगिन और डेटा सिंक करें
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MAIN APPLICATION CONTAINER
+       ======================================================================== -->
   <div class="app-container">
     <!-- Toast Popup -->
     <div id="toast" class="toast-msg">सेव किया गया!</div>
@@ -707,9 +865,12 @@
           <p id="live-date-label">प्रो फिटनेस और जिम ट्रैकर</p>
         </div>
       </div>
-      <div class="streak-pill">
-        <span>🔥</span>
-        <span id="header-streak">0 दिन</span>
+      <div class="header-right">
+        <div class="streak-pill">
+          <span>🔥</span>
+          <span id="header-streak">0 दिन</span>
+        </div>
+        <button type="button" class="logout-icon-btn" onclick="lockAdminSession()" title="लॉक करें">🔒</button>
       </div>
     </header>
 
@@ -720,15 +881,15 @@
       <!-- Attendance Summary Row -->
       <div class="stats-grid">
         <div class="stat-box">
-          <span class="stat-val" style="color: var(--present-green);" id="stat-present">0</span>
+          <span class="stat-val" style="color: #6EE7B7;" id="stat-present">0</span>
           <span class="stat-lbl">उपस्थित (Present)</span>
         </div>
         <div class="stat-box">
-          <span class="stat-val" style="color: var(--absent-red);" id="stat-absent">0</span>
+          <span class="stat-val" style="color: #FDA4AF;" id="stat-absent">0</span>
           <span class="stat-lbl">अनुपस्थित (Absent)</span>
         </div>
         <div class="stat-box">
-          <span class="stat-val" style="color: var(--gold-primary);" id="stat-rate">0%</span>
+          <span class="stat-val" style="color: #FDE68A;" id="stat-rate">0%</span>
           <span class="stat-lbl">इस माह हाज़िरी</span>
         </div>
       </div>
@@ -740,6 +901,7 @@
             <div class="card-title">📅 आज की जिम उपस्थिति (Daily Attendance)</div>
             <div class="card-subtitle" id="today-status-sub">आज का स्टेटस चुनें</div>
           </div>
+          <span id="cloud-status-chip" class="sync-badge">☁️ सिंक सक्रिय</span>
         </div>
 
         <div class="attendance-btn-group">
@@ -759,7 +921,7 @@
 
         <!-- Absent Reason Input -->
         <div id="absent-reason-container" class="absent-reason-box">
-          <label style="font-size:12px; color:#FCA5A5; font-weight:700; display:block; margin-bottom:6px;">
+          <label style="font-size:12px; color:#FECDD3; font-weight:700; display:block; margin-bottom:6px;">
             आज जिम न जाने का कारण (वैकल्पिक):
           </label>
           <div style="display:flex; gap:8px;">
@@ -776,7 +938,7 @@
             <div class="card-title" id="home-workout-title">🏋️ आज का वर्कआउट टार्गेट</div>
             <div class="card-subtitle" id="home-workout-sub">आज के सेट्स पूरे करें</div>
           </div>
-          <button type="button" class="preset-btn" style="color:var(--gold-primary);" onclick="switchTab('tab-workout')">खोलें →</button>
+          <button type="button" class="preset-btn" style="color:#FDE68A;" onclick="switchTab('tab-workout')">खोलें →</button>
         </div>
         <div class="progress-bar-wrap">
           <div class="progress-bar-fill" id="home-workout-bar"></div>
@@ -788,7 +950,7 @@
       <div class="glass-card">
         <div class="card-header">
           <div class="card-title">💧 दैनिक पानी और डाइट ट्रैकर</div>
-          <span style="font-size:12px; color:var(--gold-primary); font-weight:700;" id="water-count-label">0 / 12 गिलास</span>
+          <span style="font-size:13px; color:#FDE68A; font-weight:800;" id="water-count-label">0 / 12 गिलास</span>
         </div>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
           <button type="button" class="att-btn" onclick="updateWater(1)">
@@ -820,7 +982,7 @@
           <div class="progress-bar-fill" id="workout-progress-bar"></div>
         </div>
 
-        <!-- Exercise List Container -->
+        <!-- Exercise List Container (Clean without Delete Cross Buttons) -->
         <div id="exercise-list-container"></div>
 
         <button type="button" class="btn-primary" style="margin-top:8px;" onclick="finishWorkoutSession()">
@@ -860,14 +1022,14 @@
         </div>
         <div class="cal-grid" id="calendar-days-grid"></div>
 
-        <div style="display:flex; justify-content:space-around; margin-top:16px; font-size:12px; color:var(--text-muted);">
-          <span>🟢 Present (उपस्थित)</span>
-          <span>🔴 Absent (अनुपस्थित)</span>
-          <span>🟡 Rest (आराम)</span>
+        <div style="display:flex; justify-content:space-around; margin-top:16px; font-size:12px; color:var(--text-muted); font-weight:700;">
+          <span>🟢 Present</span>
+          <span>🔴 Absent</span>
+          <span>🟡 Rest</span>
         </div>
       </div>
 
-      <!-- Selected Date Editor Modal Card -->
+      <!-- Selected Date Editor Card -->
       <div class="glass-card" id="selected-date-card">
         <div class="card-title" id="selected-date-heading">तारीख का विवरण</div>
         <p style="font-size:12px; color:var(--text-muted); margin:4px 0 12px;" id="selected-date-reason">स्टेटस बदलने के लिए नीचे बटन दबाएं:</p>
@@ -880,15 +1042,15 @@
     </section>
 
     <!-- ======================================================================
-         TAB 4: GYM TOOLS (REST TIMER, 1RM, BACKUP)
+         TAB 4: GYM TOOLS & CLOUD AUTO-RESTORE
          ====================================================================== -->
     <section id="tab-tools" class="view-section">
-      <!-- Synthesized Web Audio Rest Timer -->
+      <!-- Silent Rest Timer -->
       <div class="glass-card">
         <div class="card-header">
           <div>
-            <div class="card-title">⏱️ स्मार्ट रेस्ट टाइमर (ऑफ़लाइन साउंड)</div>
-            <div class="card-subtitle">Web Audio API सिंथेसाइज़र बीप अलार्म</div>
+            <div class="card-title">⏱️ स्मार्ट रेस्ट टाइमर (Silent Mode)</div>
+            <div class="card-subtitle">बिना बीप साउंड के विज़ुअल काउंटडाउन टाइमर</div>
           </div>
         </div>
 
@@ -907,6 +1069,25 @@
         </div>
       </div>
 
+      <!-- Cloud Sync & Account Recovery -->
+      <div class="glass-card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">☁️ एडमिन क्लाउड रिकवरी और बैकअप</div>
+            <div class="card-subtitle">ऐप डिलीट होने पर मोबाइल और OTP से डेटा वापस पाएं</div>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
+          <button type="button" class="btn-primary" onclick="syncToCloudVault(true)">☁️ क्लाउड पर सेव करें</button>
+          <button type="button" class="att-btn" style="min-height:48px; border-color:#38BDF8; color:#7DD3FC;" onclick="restoreFromCloudVault(true)">🔄 क्लाउड से रीस्टोर</button>
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+          <button type="button" class="att-btn" onclick="exportBackupData()">⬇️ फ़ाइल बैकअप डाउनलोड</button>
+          <button type="button" class="att-btn" onclick="document.getElementById('import-file').click()">⬆️ फ़ाइल से रीस्टोर</button>
+          <input type="file" id="import-file" style="display:none;" accept=".json" onchange="importBackupData(event)">
+        </div>
+      </div>
+
       <!-- 1RM Strength Calculator -->
       <div class="glass-card">
         <div class="card-title" style="margin-bottom:10px;">💪 1RM (अधिकतम स्ट्रेंथ) कैलकुलेटर</div>
@@ -914,22 +1095,9 @@
           <input type="number" id="rm-weight" class="form-input" placeholder="उठाया गया वजन (Kg)" oninput="calcOneRepMax()">
           <input type="number" id="rm-reps" class="form-input" placeholder="रेप्स (Reps)" oninput="calcOneRepMax()">
         </div>
-        <div style="background:rgba(245,158,11,0.12); border:1px solid rgba(245,158,11,0.3); padding:12px; border-radius:12px; text-align:center;">
+        <div style="background:rgba(245,158,11,0.16); border:1px solid rgba(245,158,11,0.35); padding:12px; border-radius:12px; text-align:center;">
           <span style="font-size:12px; color:var(--text-muted);">अनुमानित 1-Rep Max:</span>
-          <strong style="font-size:20px; color:var(--gold-primary); display:block;" id="rm-result">0 Kg</strong>
-        </div>
-      </div>
-
-      <!-- Data Backup & Restore -->
-      <div class="glass-card">
-        <div class="card-title" style="margin-bottom:8px;">💾 डेटा बैकअप और सुरक्षा</div>
-        <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">
-          दिलखुश सैनी का सारा डेटा फ़ोन में सुरक्षित रहता है। फ़ोन बदलते समय यहाँ से बैकअप डाउनलोड या रीस्टोर करें।
-        </p>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-          <button type="button" class="att-btn" onclick="exportBackupData()">⬇️ बैकअप डाउनलोड</button>
-          <button type="button" class="att-btn" onclick="document.getElementById('import-file').click()">⬆️ रीस्टोर फ़ाइल</button>
-          <input type="file" id="import-file" style="display:none;" accept=".json" onchange="importBackupData(event)">
+          <strong style="font-size:20px; color:#FDE68A; display:block;" id="rm-result">0 Kg</strong>
         </div>
       </div>
     </section>
@@ -970,7 +1138,6 @@
         return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
       };
 
-      // Block Context Menu (Long-Press Popup on Android & iOS)
       document.addEventListener('contextmenu', function(e) {
         if (!isEditableField(e.target)) {
           e.preventDefault();
@@ -978,7 +1145,6 @@
         }
       }, { passive: false });
 
-      // Block Text Selection Start & Clipboard Copy/Cut
       ['selectstart', 'copy', 'cut', 'dragstart'].forEach(function(evtName) {
         document.addEventListener(evtName, function(e) {
           if (!isEditableField(e.target)) {
@@ -988,19 +1154,16 @@
         }, { passive: false });
       });
 
-      // Prevent Multi-Touch Pinch Zoom
       document.addEventListener('touchstart', function(e) {
         if (e.touches.length > 1) {
           e.preventDefault();
         }
       }, { passive: false });
 
-      // Prevent iOS Gesture Zoom
       document.addEventListener('gesturestart', function(e) {
         e.preventDefault();
       }, { passive: false });
 
-      // Prevent Rapid Double-Tap Zoom (<= 300ms threshold)
       let lastTouchEnd = 0;
       document.addEventListener('touchend', function(e) {
         const now = Date.now();
@@ -1012,63 +1175,103 @@
     })();
 
     /* ==========================================================================
-       2. WEB AUDIO API SYNTHESIZER (ZERO EXTERNAL MP3 FILES)
+       2. SILENT AUDIO STUB (ALL BEEPS COMPLETELY DISABLED AS REQUESTED)
        ========================================================================== */
-    let sharedAudioCtx = null;
-
-    function getUnlockedAudioContext() {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      if (!AudioCtx) return null;
-      if (!sharedAudioCtx) {
-        sharedAudioCtx = new AudioCtx();
-      }
-      if (sharedAudioCtx.state === 'suspended') {
-        sharedAudioCtx.resume();
-      }
-      return sharedAudioCtx;
-    }
-
-    function playSynthBeep(freq = 880, durationMs = 200, delaySeconds = 0) {
-      try {
-        const ctx = getUnlockedAudioContext();
-        if (!ctx) return;
-
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq, ctx.currentTime + delaySeconds);
-
-        // 10ms envelope ramp to eliminate acoustic click
-        const startTime = ctx.currentTime + delaySeconds;
-        const durationSec = durationMs / 1000;
-
-        gain.gain.setValueAtTime(0.001, startTime);
-        gain.gain.linearRampToValueAtTime(0.35, startTime + 0.01);
-        gain.gain.setValueAtTime(0.35, startTime + durationSec - 0.015);
-        gain.gain.linearRampToValueAtTime(0.0001, startTime + durationSec);
-
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-
-        osc.start(startTime);
-        osc.stop(startTime + durationSec);
-      } catch (err) {
-        // Silent fallback if audio hardware unavailable
-      }
+    function playSynthBeep() {
+      // 100% Silent — Beep sound permanently turned off
     }
 
     function triggerTimerAlarmPattern() {
-      playSynthBeep(880, 180, 0.0);
-      playSynthBeep(880, 180, 0.25);
-      playSynthBeep(1174, 320, 0.50);
+      // Silent visual notification only
     }
 
     /* ==========================================================================
-       3. DEFAULT DATA & STATE MANAGEMENT (LOCALSTORAGE)
+       3. ADMIN AUTHENTICATION & CLOUD SYNC VAULT (8306980270 + HIDDEN OTP)
        ========================================================================== */
-    const STORAGE_KEY = 'dilkhush_saini_gym_pro_v1';
+    const STORAGE_KEY = 'dilkhush_saini_gym_pro_v2_8306980270';
+    const AUTH_SESSION_KEY = 'dilkhush_admin_logged_in_v2';
+    // Encoded credentials so password is never shown on screen
+    const ADMIN_MOB_HASH = 'ODMwNjk4MDI3MA=='; // 8306980270
+    const ADMIN_OTP_HASH = 'Nzc0MjEx';         // 774211
+    const CLOUD_VAULT_ENDPOINT = 'https://kvdb.io/A6Xy9kP3mQv8Wz2L4nRt7B/ds_gym_vault_8306980270_774211';
 
+    async function handleAdminLogin(e) {
+      e.preventDefault();
+      const mobInput = document.getElementById('login-mobile-input').value.trim();
+      const otpInput = document.getElementById('login-otp-input').value.trim();
+      const errBox = document.getElementById('login-error-box');
+
+      if (btoa(mobInput) === ADMIN_MOB_HASH && btoa(otpInput) === ADMIN_OTP_HASH) {
+        errBox.style.display = 'none';
+        localStorage.setItem(AUTH_SESSION_KEY, 'verified');
+        document.getElementById('login-otp-input').value = '';
+        document.getElementById('admin-login-overlay').classList.add('hidden');
+
+        // Automatically restore from cloud if local storage was wiped/reinstalled
+        const hasLocalRecords = Object.keys(appState.attendance || {}).length > 0;
+        if (!hasLocalRecords) {
+          await restoreFromCloudVault(false);
+        } else {
+          syncToCloudVault(false);
+        }
+        renderHomeDashboard();
+        showToast('स्वागत है दिलखुश सैनी! डेटा सिंक हो गया ✅');
+      } else {
+        errBox.style.display = 'block';
+      }
+    }
+
+    function lockAdminSession() {
+      localStorage.removeItem(AUTH_SESSION_KEY);
+      document.getElementById('login-otp-input').value = '';
+      document.getElementById('admin-login-overlay').classList.remove('hidden');
+    }
+
+    async function syncToCloudVault(showNotification = false) {
+      const chip = document.getElementById('cloud-status-chip');
+      try {
+        if (chip) chip.textContent = '☁️ सिंक हो रहा है...';
+        await fetch(CLOUD_VAULT_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            updatedAt: Date.now(),
+            state: appState
+          })
+        });
+        if (chip) chip.textContent = '☁️ क्लाउड सुरक्षित';
+        if (showNotification) showToast('क्लाउड पर सारा डेटा सुरक्षित सेव हो गया!');
+      } catch (err) {
+        if (chip) chip.textContent = '📱 ऑफ़लाइन सेव';
+        if (showNotification) showToast('फ़ोन मेमोरी में सुरक्षित (इंटरनेट मिलने पर क्लाउड सिंक होगा)');
+      }
+    }
+
+    async function restoreFromCloudVault(showNotification = true) {
+      try {
+        const res = await fetch(CLOUD_VAULT_ENDPOINT);
+        if (res.ok) {
+          const payload = await res.json();
+          if (payload && payload.state && payload.state.workoutPlan) {
+            appState = payload.state;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+            renderHomeDashboard();
+            renderWorkoutTab();
+            renderCalendarTab();
+            if (showNotification) showToast('क्लाउड से सारा पिछला डेटा सफलतापूर्वक वापस आ गया!');
+            return true;
+          }
+        }
+        if (showNotification) showToast('कोई क्लाउड बैकअप नहीं मिला या डेटा पहले से अप-टू-डेट है');
+      } catch (err) {
+        if (showNotification) showToast('इंटरनेट कनेक्शन जांचें');
+      }
+      return false;
+    }
+
+    /* ==========================================================================
+       4. DEFAULT WORKOUT DATA & STATE ENGINE
+       ========================================================================== */
     const DEFAULT_SPLIT = {
       1: {
         dayName: 'सोमवार',
@@ -1146,14 +1349,14 @@
     };
 
     let appState = {
-      attendance: {}, // { 'YYYY-MM-DD': { status: 'present'|'absent'|'rest', reason: '' } }
-      waterByDate: {}, // { 'YYYY-MM-DD': number }
+      attendance: {},
+      waterByDate: {},
       workoutPlan: JSON.parse(JSON.stringify(DEFAULT_SPLIT))
     };
 
     function loadState() {
       try {
-        const raw = localStorage.getItem(STORAGE_KEY);
+        const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('dilkhush_saini_gym_pro_v1');
         if (raw) {
           const parsed = JSON.parse(raw);
           appState.attendance = parsed.attendance || {};
@@ -1168,6 +1371,7 @@
     function saveState() {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+        syncToCloudVault(false);
       } catch (e) {
         console.error('Storage quota warning');
       }
@@ -1188,7 +1392,7 @@
     }
 
     /* ==========================================================================
-       4. NAVIGATION & UI RENDERING
+       5. NAVIGATION & UI RENDERING
        ========================================================================== */
     let activeWorkoutDay = new Date().getDay();
     let calYear = new Date().getFullYear();
@@ -1196,7 +1400,6 @@
     let selectedCalDateKey = getDateKey(new Date());
 
     function switchTab(tabId) {
-      playSynthBeep(600, 35, 0);
       document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
 
@@ -1210,10 +1413,9 @@
     }
 
     /* ==========================================================================
-       5. HOME DASHBOARD & DAILY ATTENDANCE LOGIC
+       6. HOME DASHBOARD & DAILY ATTENDANCE LOGIC
        ========================================================================== */
     function markTodayAttendance(status) {
-      playSynthBeep(status === 'present' ? 880 : 520, 80, 0);
       const todayKey = getDateKey(new Date());
       const existing = appState.attendance[todayKey] || {};
       appState.attendance[todayKey] = {
@@ -1262,7 +1464,6 @@
       const totalTracked = presentCount + absentCount;
       const rate = totalTracked > 0 ? Math.round((presentCount / totalTracked) * 100) : 0;
 
-      // Calculate Current Streak
       let streak = 0;
       let cursor = new Date();
       for (let i = 0; i < 365; i++) {
@@ -1296,7 +1497,6 @@
       document.getElementById('stat-rate').textContent = `${metrics.rate}%`;
       document.getElementById('header-streak').textContent = `${metrics.streak} दिन`;
 
-      // Highlight Today's Attendance Buttons
       const todayEntry = appState.attendance[todayKey];
       const btnP = document.getElementById('btn-att-present');
       const btnA = document.getElementById('btn-att-absent');
@@ -1323,7 +1523,6 @@
         document.getElementById('today-status-sub').textContent = 'आज की हाज़िरी अभी तक मार्क नहीं की गई है';
       }
 
-      // Today's Workout Summary
       const todayPlan = appState.workoutPlan[now.getDay()];
       const totalEx = todayPlan.exercises.length;
       const doneEx = todayPlan.exercises.filter(e => e.done).length;
@@ -1336,13 +1535,11 @@
       const previewNames = todayPlan.exercises.slice(0, 3).map(e => `${e.done ? '✅' : '▫️'} ${e.name}`).join(' • ');
       document.getElementById('home-workout-preview').textContent = previewNames || 'कोई एक्सरसाइज नहीं';
 
-      // Water Count
       const water = appState.waterByDate[todayKey] || 0;
       document.getElementById('water-count-label').textContent = `${water} / 12 गिलास`;
     }
 
     function updateWater(delta) {
-      playSynthBeep(700, 40, 0);
       const todayKey = getDateKey(new Date());
       const current = appState.waterByDate[todayKey] || 0;
       appState.waterByDate[todayKey] = Math.max(0, Math.min(25, current + delta));
@@ -1351,7 +1548,7 @@
     }
 
     /* ==========================================================================
-       6. WORKOUT ROUTINE & CUSTOM EXERCISE ENGINE
+       7. WORKOUT ROUTINE & CUSTOM EXERCISE ENGINE (NO DELETE BUTTON)
        ========================================================================== */
     function renderWorkoutTab() {
       const dayOrder = [1, 2, 3, 4, 5, 6, 0];
@@ -1393,7 +1590,6 @@
               <div class="custom-checkbox">${ex.done ? '✓' : ''}</div>
               <div class="ex-name">${ex.name}</div>
             </div>
-            <button type="button" class="del-ex-btn" onclick="deleteExercise(${activeWorkoutDay}, ${index})" title="हटाएं">✕</button>
           </div>
           <div class="ex-inputs">
             <div class="input-mini-group">
@@ -1417,7 +1613,6 @@
     function toggleExerciseDone(dayIdx, exIdx) {
       const ex = appState.workoutPlan[dayIdx].exercises[exIdx];
       ex.done = !ex.done;
-      playSynthBeep(ex.done ? 940 : 480, 60, 0);
       saveState();
       renderWorkoutTab();
     }
@@ -1425,13 +1620,6 @@
     function updateExField(dayIdx, exIdx, field, val) {
       appState.workoutPlan[dayIdx].exercises[exIdx][field] = val;
       saveState();
-    }
-
-    function deleteExercise(dayIdx, exIdx) {
-      appState.workoutPlan[dayIdx].exercises.splice(exIdx, 1);
-      saveState();
-      renderWorkoutTab();
-      showToast('एक्सरसाइज हटाई गई');
     }
 
     function addCustomExercise() {
@@ -1474,7 +1662,7 @@
     }
 
     /* ==========================================================================
-       7. INTERACTIVE MONTHLY ATTENDANCE CALENDAR
+       8. INTERACTIVE MONTHLY ATTENDANCE CALENDAR
        ========================================================================== */
     function changeMonth(delta) {
       calMonth += delta;
@@ -1534,7 +1722,6 @@
     }
 
     function setCalendarDateStatus(status) {
-      playSynthBeep(760, 60, 0);
       appState.attendance[selectedCalDateKey] = { status: status, reason: '' };
       saveState();
       renderCalendarTab();
@@ -1543,7 +1730,7 @@
     }
 
     /* ==========================================================================
-       8. REST TIMER, 1RM CALCULATOR & JSON BACKUP
+       9. SILENT REST TIMER, 1RM CALCULATOR & JSON BACKUP
        ========================================================================== */
     let timerDuration = 60;
     let timerRemaining = 60;
@@ -1556,7 +1743,6 @@
     }
 
     function setTimerSeconds(sec) {
-      playSynthBeep(660, 40, 0);
       clearInterval(timerInterval);
       timerInterval = null;
       timerDuration = sec;
@@ -1566,9 +1752,6 @@
     }
 
     function toggleTimer() {
-      // Unlock Web Audio Context immediately on user tap
-      playSynthBeep(880, 50, 0);
-
       if (timerInterval) {
         clearInterval(timerInterval);
         timerInterval = null;
@@ -1583,7 +1766,6 @@
             clearInterval(timerInterval);
             timerInterval = null;
             document.getElementById('timer-start-btn').textContent = '▶ शुरू करें';
-            triggerTimerAlarmPattern();
             showToast('⏰ रेस्ट का समय समाप्त! अगला सेट लगाएं!');
           }
         }, 1000);
@@ -1598,7 +1780,6 @@
       const w = parseFloat(document.getElementById('rm-weight').value) || 0;
       const r = parseFloat(document.getElementById('rm-reps').value) || 0;
       if (w > 0 && r > 0) {
-        // Epley Formula: 1RM = Weight * (1 + Reps/30)
         const max = Math.round(w * (1 + r / 30));
         document.getElementById('rm-result').textContent = `${max} Kg`;
       } else {
@@ -1637,9 +1818,15 @@
       reader.readAsText(file);
     }
 
-    // Initialize App on Load
-    window.addEventListener('DOMContentLoaded', () => {
+    // Initialize App & Check Admin Session
+    window.addEventListener('DOMContentLoaded', async () => {
       loadState();
+      if (localStorage.getItem(AUTH_SESSION_KEY) === 'verified') {
+        document.getElementById('admin-login-overlay').classList.add('hidden');
+        if (Object.keys(appState.attendance || {}).length === 0) {
+          await restoreFromCloudVault(false);
+        }
+      }
       renderHomeDashboard();
     });
   </script>
