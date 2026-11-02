@@ -1,0 +1,1647 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Dilkhush Gym">
+  <meta name="theme-color" content="#0B0F17">
+  <meta name="format-detection" content="telephone=no">
+  <title>Dilkhush Saini Fitness & Gym Tracker</title>
+
+  <style>
+    /* ==========================================================================
+       1. ANTI-COPY, ANTI-SELECT & WEBVIEW HARDENING RULES
+       ========================================================================== */
+    :root {
+      --bg-primary: #0B0F17;
+      --bg-secondary: #151C28;
+      --bg-card: rgba(25, 34, 49, 0.88);
+      --border-glass: rgba(255, 255, 255, 0.08);
+      --gold-primary: #F59E0B;
+      --gold-glow: rgba(245, 158, 11, 0.25);
+      --accent-blue: #3B82F6;
+      --present-green: #10B981;
+      --absent-red: #EF4444;
+      --rest-amber: #F59E0B;
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+      --safe-bottom: env(safe-area-inset-bottom, 16px);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      /* Strict Disabling of Text Selection & Highlighting Across All Engines */
+      -webkit-user-select: none !important;
+      -moz-user-select: none !important;
+      -ms-user-select: none !important;
+      user-select: none !important;
+      /* Disable iOS Long-Press Action Callout & Dragging */
+      -webkit-touch-callout: none !important;
+      -webkit-user-drag: none !important;
+      /* Eliminate Mobile Tap Flash Highlight */
+      -webkit-tap-highlight-color: transparent !important;
+    }
+
+    /* Selective Re-enabling of Selection ONLY inside Input Fields for Logging */
+    input, textarea, select {
+      -webkit-user-select: text !important;
+      -moz-user-select: text !important;
+      -ms-user-select: text !important;
+      user-select: text !important;
+      -webkit-touch-callout: default !important;
+      font-family: inherit;
+    }
+
+    ::selection {
+      background: transparent;
+      color: inherit;
+    }
+
+    input::selection, textarea::selection {
+      background: rgba(245, 158, 11, 0.35);
+      color: #fff;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      overflow-x: hidden;
+      overscroll-behavior-y: none;
+      touch-action: manipulation;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* App Shell Layout */
+    .app-container {
+      max-width: 500px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding-bottom: calc(88px + var(--safe-bottom));
+      position: relative;
+      background: radial-gradient(circle at 50% 0%, rgba(245, 158, 11, 0.12) 0%, transparent 60%), var(--bg-primary);
+    }
+
+    /* ==========================================================================
+       2. PREMIUM HEADER & PROFILE BAR
+       ========================================================================== */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(11, 15, 23, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-glass);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .profile-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar-badge {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 18px;
+      color: #0B0F17;
+      box-shadow: 0 4px 14px var(--gold-glow);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      flex-shrink: 0;
+    }
+
+    .profile-text h1 {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      background: linear-gradient(90deg, #FFFFFF 0%, #FDE68A 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .profile-text p {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .streak-pill {
+      background: rgba(245, 158, 11, 0.14);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      padding: 6px 12px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+      font-size: 13px;
+      color: #FBBF24;
+    }
+
+    /* ==========================================================================
+       3. CARDS, GRIDS & REUSABLE UI COMPONENTS
+       ========================================================================== */
+    .view-section {
+      display: none;
+      padding: 16px;
+      animation: fadeIn 0.22s ease-out;
+    }
+
+    .view-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .glass-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .stat-box {
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid var(--border-glass);
+      border-radius: 14px;
+      padding: 12px 10px;
+      text-align: center;
+    }
+
+    .stat-val {
+      font-size: 20px;
+      font-weight: 800;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .stat-lbl {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       4. DAILY ATTENDANCE QUICK ACTION BUTTONS
+       ========================================================================== */
+    .attendance-btn-group {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .att-btn {
+      min-height: 52px;
+      border-radius: 14px;
+      border: 1px solid var(--border-glass);
+      background: rgba(30, 41, 59, 0.7);
+      color: var(--text-main);
+      font-weight: 700;
+      font-size: 13px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      cursor: pointer;
+      transition: transform 0.12s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .att-btn:active {
+      transform: scale(0.96);
+    }
+
+    .att-btn.active-present {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: var(--present-green);
+      color: #34D399;
+      box-shadow: 0 0 16px rgba(16, 185, 129, 0.2);
+    }
+
+    .att-btn.active-absent {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: var(--absent-red);
+      color: #F87171;
+      box-shadow: 0 0 16px rgba(239, 68, 68, 0.2);
+    }
+
+    .att-btn.active-rest {
+      background: rgba(245, 158, 11, 0.2);
+      border-color: var(--rest-amber);
+      color: #FBBF24;
+      box-shadow: 0 0 16px rgba(245, 158, 11, 0.2);
+    }
+
+    .absent-reason-box {
+      margin-top: 12px;
+      display: none;
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 12px;
+      border-radius: 12px;
+    }
+
+    .absent-reason-box.show {
+      display: block;
+    }
+
+    /* ==========================================================================
+       5. WORKOUT ROUTINE & EXERCISE LIST
+       ========================================================================== */
+    .day-selector {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 14px;
+      scrollbar-width: none;
+    }
+
+    .day-selector::-webkit-scrollbar {
+      display: none;
+    }
+
+    .day-chip {
+      padding: 10px 16px;
+      border-radius: 14px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-glass);
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 13px;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .day-chip.active {
+      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+      color: #0B0F17;
+      border-color: transparent;
+      box-shadow: 0 4px 12px var(--gold-glow);
+    }
+
+    .progress-bar-wrap {
+      width: 100%;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.07);
+      border-radius: 99px;
+      overflow: hidden;
+      margin: 10px 0 14px;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #F59E0B 0%, #10B981 100%);
+      border-radius: 99px;
+      transition: width 0.3s ease;
+    }
+
+    .exercise-item {
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid var(--border-glass);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .exercise-item.completed {
+      border-color: rgba(16, 185, 129, 0.5);
+      background: rgba(16, 185, 129, 0.08);
+    }
+
+    .ex-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .ex-check-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      cursor: pointer;
+    }
+
+    .custom-checkbox {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      border: 2px solid var(--gold-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: #0B0F17;
+      font-weight: 900;
+      flex-shrink: 0;
+      transition: all 0.15s ease;
+    }
+
+    .exercise-item.completed .custom-checkbox {
+      background: var(--present-green);
+      border-color: var(--present-green);
+      color: #fff;
+    }
+
+    .ex-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .exercise-item.completed .ex-name {
+      text-decoration: line-through;
+      color: var(--text-muted);
+    }
+
+    .ex-inputs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .input-mini-group {
+      background: rgba(11, 15, 23, 0.7);
+      border: 1px solid var(--border-glass);
+      border-radius: 10px;
+      padding: 6px 8px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .input-mini-group label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .input-mini-group input {
+      background: transparent;
+      border: none;
+      color: var(--gold-primary);
+      font-weight: 800;
+      font-size: 15px;
+      width: 100%;
+      outline: none;
+      margin-top: 2px;
+    }
+
+    .del-ex-btn {
+      background: rgba(239, 68, 68, 0.15);
+      border: none;
+      color: #F87171;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ==========================================================================
+       6. MONTHLY ATTENDANCE CALENDAR
+       ========================================================================== */
+    .cal-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .cal-nav-btn {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-glass);
+      color: var(--text-main);
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .cal-grid-header {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      text-align: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+    }
+
+    .cal-day {
+      aspect-ratio: 1;
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border-glass);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .cal-day.empty {
+      background: transparent;
+      border: none;
+      cursor: default;
+    }
+
+    .cal-day.today {
+      border: 2px solid var(--accent-blue);
+    }
+
+    .cal-day.status-present {
+      background: rgba(16, 185, 129, 0.22);
+      border-color: var(--present-green);
+      color: #34D399;
+    }
+
+    .cal-day.status-absent {
+      background: rgba(239, 68, 68, 0.22);
+      border-color: var(--absent-red);
+      color: #F87171;
+    }
+
+    .cal-day.status-rest {
+      background: rgba(245, 158, 11, 0.22);
+      border-color: var(--rest-amber);
+      color: #FBBF24;
+    }
+
+    .cal-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      margin-top: 2px;
+    }
+
+    /* ==========================================================================
+       7. FORMS, BUTTONS & TIMERS
+       ========================================================================== */
+    .form-input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border-glass);
+      background: rgba(11, 15, 23, 0.8);
+      color: var(--text-main);
+      font-size: 14px;
+      outline: none;
+      margin-bottom: 10px;
+    }
+
+    .form-input:focus {
+      border-color: var(--gold-primary);
+    }
+
+    .btn-primary {
+      width: 100%;
+      min-height: 48px;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+      color: #0B0F17;
+      font-weight: 800;
+      font-size: 15px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px var(--gold-glow);
+      transition: transform 0.12s ease;
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+    }
+
+    .timer-display {
+      font-size: 48px;
+      font-weight: 900;
+      text-align: center;
+      color: var(--gold-primary);
+      font-variant-numeric: tabular-nums;
+      margin: 10px 0;
+      letter-spacing: 2px;
+    }
+
+    .preset-chips {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .preset-btn {
+      padding: 10px;
+      border-radius: 10px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-glass);
+      color: var(--text-main);
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    /* ==========================================================================
+       8. BOTTOM NAVIGATION BAR
+       ========================================================================== */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 500px;
+      background: rgba(15, 23, 42, 0.94);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-top: 1px solid var(--border-glass);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      padding: 8px 10px calc(8px + var(--safe-bottom));
+      z-index: 100;
+    }
+
+    .nav-item {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 6px 0;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      border-radius: 12px;
+      transition: color 0.2s ease, background 0.2s ease;
+    }
+
+    .nav-item svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      stroke-width: 2;
+      fill: none;
+    }
+
+    .nav-item.active {
+      color: var(--gold-primary);
+      background: rgba(245, 158, 11, 0.1);
+    }
+
+    /* Toast Notification */
+    .toast-msg {
+      position: fixed;
+      top: 76px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      background: #10B981;
+      color: #0B0F17;
+      font-weight: 800;
+      font-size: 13px;
+      padding: 10px 20px;
+      border-radius: 99px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s ease;
+      z-index: 200;
+      white-space: nowrap;
+    }
+
+    .toast-msg.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Toast Popup -->
+    <div id="toast" class="toast-msg">सेव किया गया!</div>
+
+    <!-- Top Sticky Header -->
+    <header class="app-header">
+      <div class="profile-group">
+        <div class="avatar-badge">DS</div>
+        <div class="profile-text">
+          <h1>दिलखुश सैनी</h1>
+          <p id="live-date-label">प्रो फिटनेस और जिम ट्रैकर</p>
+        </div>
+      </div>
+      <div class="streak-pill">
+        <span>🔥</span>
+        <span id="header-streak">0 दिन</span>
+      </div>
+    </header>
+
+    <!-- ======================================================================
+         TAB 1: HOME DASHBOARD & DAILY ATTENDANCE
+         ====================================================================== -->
+    <section id="tab-home" class="view-section active">
+      <!-- Attendance Summary Row -->
+      <div class="stats-grid">
+        <div class="stat-box">
+          <span class="stat-val" style="color: var(--present-green);" id="stat-present">0</span>
+          <span class="stat-lbl">उपस्थित (Present)</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-val" style="color: var(--absent-red);" id="stat-absent">0</span>
+          <span class="stat-lbl">अनुपस्थित (Absent)</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-val" style="color: var(--gold-primary);" id="stat-rate">0%</span>
+          <span class="stat-lbl">इस माह हाज़िरी</span>
+        </div>
+      </div>
+
+      <!-- Daily Attendance Card -->
+      <div class="glass-card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">📅 आज की जिम उपस्थिति (Daily Attendance)</div>
+            <div class="card-subtitle" id="today-status-sub">आज का स्टेटस चुनें</div>
+          </div>
+        </div>
+
+        <div class="attendance-btn-group">
+          <button type="button" class="att-btn" id="btn-att-present" onclick="markTodayAttendance('present')">
+            <span style="font-size:18px;">✅</span>
+            <span>Present (जिम गए)</span>
+          </button>
+          <button type="button" class="att-btn" id="btn-att-absent" onclick="markTodayAttendance('absent')">
+            <span style="font-size:18px;">❌</span>
+            <span>Absent (छुट्टी)</span>
+          </button>
+          <button type="button" class="att-btn" id="btn-att-rest" onclick="markTodayAttendance('rest')">
+            <span style="font-size:18px;">🛌</span>
+            <span>Rest Day (आराम)</span>
+          </button>
+        </div>
+
+        <!-- Absent Reason Input -->
+        <div id="absent-reason-container" class="absent-reason-box">
+          <label style="font-size:12px; color:#FCA5A5; font-weight:700; display:block; margin-bottom:6px;">
+            आज जिम न जाने का कारण (वैकल्पिक):
+          </label>
+          <div style="display:flex; gap:8px;">
+            <input type="text" id="absent-reason-input" class="form-input" style="margin-bottom:0;" placeholder="जैसे: ज़रूरी काम, यात्रा, थकान...">
+            <button type="button" class="btn-primary" style="width:auto; padding:0 16px;" onclick="saveAbsentReason()">सेव</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Today's Scheduled Workout Preview Card -->
+      <div class="glass-card">
+        <div class="card-header">
+          <div>
+            <div class="card-title" id="home-workout-title">🏋️ आज का वर्कआउट टार्गेट</div>
+            <div class="card-subtitle" id="home-workout-sub">आज के सेट्स पूरे करें</div>
+          </div>
+          <button type="button" class="preset-btn" style="color:var(--gold-primary);" onclick="switchTab('tab-workout')">खोलें →</button>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" id="home-workout-bar"></div>
+        </div>
+        <div id="home-workout-preview" style="font-size:13px; color:var(--text-muted);"></div>
+      </div>
+
+      <!-- Daily Hydration & Nutrition Tracker -->
+      <div class="glass-card">
+        <div class="card-header">
+          <div class="card-title">💧 दैनिक पानी और डाइट ट्रैकर</div>
+          <span style="font-size:12px; color:var(--gold-primary); font-weight:700;" id="water-count-label">0 / 12 गिलास</span>
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+          <button type="button" class="att-btn" onclick="updateWater(1)">
+            <span>➕ 1 गिलास पानी</span>
+          </button>
+          <button type="button" class="att-btn" onclick="updateWater(-1)">
+            <span>➖ कम करें</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         TAB 2: DAILY WORKOUT & SPLIT TRACKER
+         ====================================================================== -->
+    <section id="tab-workout" class="view-section">
+      <div class="day-selector" id="day-chips-container"></div>
+
+      <div class="glass-card">
+        <div class="card-header">
+          <div>
+            <div class="card-title" id="workout-day-heading">सोमवार: चेस्ट और ट्राइसेप्स</div>
+            <div class="card-subtitle" id="workout-progress-text">0/0 एक्सरसाइज पूरी हुई</div>
+          </div>
+          <button type="button" class="preset-btn" onclick="resetDayCompletion()" style="font-size:11px;">रीसेट टिक</button>
+        </div>
+
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" id="workout-progress-bar"></div>
+        </div>
+
+        <!-- Exercise List Container -->
+        <div id="exercise-list-container"></div>
+
+        <button type="button" class="btn-primary" style="margin-top:8px;" onclick="finishWorkoutSession()">
+          ✅ आज का वर्कआउट लॉग सेव करें और Present लगाएं
+        </button>
+      </div>
+
+      <!-- Add New Custom Exercise to Selected Day -->
+      <div class="glass-card">
+        <div class="card-title" style="margin-bottom:12px;">➕ इस दिन में नई एक्सरसाइज जोड़ें</div>
+        <input type="text" id="new-ex-name" class="form-input" placeholder="एक्सरसाइज का नाम (जैसे: Incline Dumbbell Press)">
+        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:8px; margin-bottom:10px;">
+          <input type="number" id="new-ex-sets" class="form-input" placeholder="Sets (4)" value="4">
+          <input type="text" id="new-ex-reps" class="form-input" placeholder="Reps (12)" value="12">
+          <input type="number" id="new-ex-weight" class="form-input" placeholder="Kg (20)" value="20">
+        </div>
+        <button type="button" class="btn-primary" onclick="addCustomExercise()">सूची में जोड़ें</button>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         TAB 3: MONTHLY ATTENDANCE & ABSENT LOG CALENDAR
+         ====================================================================== -->
+    <section id="tab-calendar" class="view-section">
+      <div class="glass-card">
+        <div class="cal-controls">
+          <button type="button" class="cal-nav-btn" onclick="changeMonth(-1)">◀</button>
+          <div style="text-align:center;">
+            <div class="card-title" id="cal-month-title" style="justify-content:center;">नवंबर 2026</div>
+            <div class="card-subtitle">किसी भी तारीख पर टैप करके स्टेटस बदलें</div>
+          </div>
+          <button type="button" class="cal-nav-btn" onclick="changeMonth(1)">▶</button>
+        </div>
+
+        <div class="cal-grid-header">
+          <span>रवि</span><span>सोम</span><span>मंगल</span><span>बुध</span><span>गुरु</span><span>शुक्र</span><span>शनि</span>
+        </div>
+        <div class="cal-grid" id="calendar-days-grid"></div>
+
+        <div style="display:flex; justify-content:space-around; margin-top:16px; font-size:12px; color:var(--text-muted);">
+          <span>🟢 Present (उपस्थित)</span>
+          <span>🔴 Absent (अनुपस्थित)</span>
+          <span>🟡 Rest (आराम)</span>
+        </div>
+      </div>
+
+      <!-- Selected Date Editor Modal Card -->
+      <div class="glass-card" id="selected-date-card">
+        <div class="card-title" id="selected-date-heading">तारीख का विवरण</div>
+        <p style="font-size:12px; color:var(--text-muted); margin:4px 0 12px;" id="selected-date-reason">स्टेटस बदलने के लिए नीचे बटन दबाएं:</p>
+        <div class="attendance-btn-group">
+          <button type="button" class="att-btn" onclick="setCalendarDateStatus('present')">✅ Present</button>
+          <button type="button" class="att-btn" onclick="setCalendarDateStatus('absent')">❌ Absent</button>
+          <button type="button" class="att-btn" onclick="setCalendarDateStatus('rest')">🛌 Rest Day</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         TAB 4: GYM TOOLS (REST TIMER, 1RM, BACKUP)
+         ====================================================================== -->
+    <section id="tab-tools" class="view-section">
+      <!-- Synthesized Web Audio Rest Timer -->
+      <div class="glass-card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">⏱️ स्मार्ट रेस्ट टाइमर (ऑफ़लाइन साउंड)</div>
+            <div class="card-subtitle">Web Audio API सिंथेसाइज़र बीप अलार्म</div>
+          </div>
+        </div>
+
+        <div class="timer-display" id="timer-readout">01:00</div>
+
+        <div class="preset-chips">
+          <button type="button" class="preset-btn" onclick="setTimerSeconds(30)">30s</button>
+          <button type="button" class="preset-btn" onclick="setTimerSeconds(60)">60s</button>
+          <button type="button" class="preset-btn" onclick="setTimerSeconds(90)">90s</button>
+          <button type="button" class="preset-btn" onclick="setTimerSeconds(120)">120s</button>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+          <button type="button" class="btn-primary" id="timer-start-btn" onclick="toggleTimer()">▶ शुरू करें</button>
+          <button type="button" class="att-btn" style="min-height:48px;" onclick="resetTimer()">🔄 रीसेट</button>
+        </div>
+      </div>
+
+      <!-- 1RM Strength Calculator -->
+      <div class="glass-card">
+        <div class="card-title" style="margin-bottom:10px;">💪 1RM (अधिकतम स्ट्रेंथ) कैलकुलेटर</div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+          <input type="number" id="rm-weight" class="form-input" placeholder="उठाया गया वजन (Kg)" oninput="calcOneRepMax()">
+          <input type="number" id="rm-reps" class="form-input" placeholder="रेप्स (Reps)" oninput="calcOneRepMax()">
+        </div>
+        <div style="background:rgba(245,158,11,0.12); border:1px solid rgba(245,158,11,0.3); padding:12px; border-radius:12px; text-align:center;">
+          <span style="font-size:12px; color:var(--text-muted);">अनुमानित 1-Rep Max:</span>
+          <strong style="font-size:20px; color:var(--gold-primary); display:block;" id="rm-result">0 Kg</strong>
+        </div>
+      </div>
+
+      <!-- Data Backup & Restore -->
+      <div class="glass-card">
+        <div class="card-title" style="margin-bottom:8px;">💾 डेटा बैकअप और सुरक्षा</div>
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">
+          दिलखुश सैनी का सारा डेटा फ़ोन में सुरक्षित रहता है। फ़ोन बदलते समय यहाँ से बैकअप डाउनलोड या रीस्टोर करें।
+        </p>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+          <button type="button" class="att-btn" onclick="exportBackupData()">⬇️ बैकअप डाउनलोड</button>
+          <button type="button" class="att-btn" onclick="document.getElementById('import-file').click()">⬆️ रीस्टोर फ़ाइल</button>
+          <input type="file" id="import-file" style="display:none;" accept=".json" onchange="importBackupData(event)">
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         BOTTOM NAVIGATION BAR
+         ====================================================================== -->
+    <nav class="bottom-nav">
+      <button type="button" class="nav-item active" data-target="tab-home" onclick="switchTab('tab-home')">
+        <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V9.5z"/></svg>
+        <span>होम</span>
+      </button>
+      <button type="button" class="nav-item" data-target="tab-workout" onclick="switchTab('tab-workout')">
+        <svg viewBox="0 0 24 24"><path d="M6.5 6.5L17.5 17.5M3 10l7-7M14 21l7-7M2 6l4-4M18 22l4-4"/></svg>
+        <span>वर्कआउट</span>
+      </button>
+      <button type="button" class="nav-item" data-target="tab-calendar" onclick="switchTab('tab-calendar')">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span>हाज़िरी</span>
+      </button>
+      <button type="button" class="nav-item" data-target="tab-tools" onclick="switchTab('tab-tools')">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg>
+        <span>टूल्स</span>
+      </button>
+    </nav>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       1. STRICT SECURITY & ANTI-COPY / ANTI-ZOOM INTERCEPTION
+       ========================================================================== */
+    (function enforceNativeAppFeel() {
+      'use strict';
+
+      const isEditableField = (el) => {
+        if (!el) return false;
+        const tag = el.tagName ? el.tagName.toUpperCase() : '';
+        return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
+      };
+
+      // Block Context Menu (Long-Press Popup on Android & iOS)
+      document.addEventListener('contextmenu', function(e) {
+        if (!isEditableField(e.target)) {
+          e.preventDefault();
+          return false;
+        }
+      }, { passive: false });
+
+      // Block Text Selection Start & Clipboard Copy/Cut
+      ['selectstart', 'copy', 'cut', 'dragstart'].forEach(function(evtName) {
+        document.addEventListener(evtName, function(e) {
+          if (!isEditableField(e.target)) {
+            e.preventDefault();
+            return false;
+          }
+        }, { passive: false });
+      });
+
+      // Prevent Multi-Touch Pinch Zoom
+      document.addEventListener('touchstart', function(e) {
+        if (e.touches.length > 1) {
+          e.preventDefault();
+        }
+      }, { passive: false });
+
+      // Prevent iOS Gesture Zoom
+      document.addEventListener('gesturestart', function(e) {
+        e.preventDefault();
+      }, { passive: false });
+
+      // Prevent Rapid Double-Tap Zoom (<= 300ms threshold)
+      let lastTouchEnd = 0;
+      document.addEventListener('touchend', function(e) {
+        const now = Date.now();
+        if (now - lastTouchEnd <= 300 && !isEditableField(e.target)) {
+          e.preventDefault();
+        }
+        lastTouchEnd = now;
+      }, { passive: false });
+    })();
+
+    /* ==========================================================================
+       2. WEB AUDIO API SYNTHESIZER (ZERO EXTERNAL MP3 FILES)
+       ========================================================================== */
+    let sharedAudioCtx = null;
+
+    function getUnlockedAudioContext() {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return null;
+      if (!sharedAudioCtx) {
+        sharedAudioCtx = new AudioCtx();
+      }
+      if (sharedAudioCtx.state === 'suspended') {
+        sharedAudioCtx.resume();
+      }
+      return sharedAudioCtx;
+    }
+
+    function playSynthBeep(freq = 880, durationMs = 200, delaySeconds = 0) {
+      try {
+        const ctx = getUnlockedAudioContext();
+        if (!ctx) return;
+
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, ctx.currentTime + delaySeconds);
+
+        // 10ms envelope ramp to eliminate acoustic click
+        const startTime = ctx.currentTime + delaySeconds;
+        const durationSec = durationMs / 1000;
+
+        gain.gain.setValueAtTime(0.001, startTime);
+        gain.gain.linearRampToValueAtTime(0.35, startTime + 0.01);
+        gain.gain.setValueAtTime(0.35, startTime + durationSec - 0.015);
+        gain.gain.linearRampToValueAtTime(0.0001, startTime + durationSec);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(startTime);
+        osc.stop(startTime + durationSec);
+      } catch (err) {
+        // Silent fallback if audio hardware unavailable
+      }
+    }
+
+    function triggerTimerAlarmPattern() {
+      playSynthBeep(880, 180, 0.0);
+      playSynthBeep(880, 180, 0.25);
+      playSynthBeep(1174, 320, 0.50);
+    }
+
+    /* ==========================================================================
+       3. DEFAULT DATA & STATE MANAGEMENT (LOCALSTORAGE)
+       ========================================================================== */
+    const STORAGE_KEY = 'dilkhush_saini_gym_pro_v1';
+
+    const DEFAULT_SPLIT = {
+      1: {
+        dayName: 'सोमवार',
+        title: 'चेस्ट और ट्राइसेप्स (Chest & Triceps)',
+        exercises: [
+          { id: 'm1', name: 'Flat Barbell Bench Press', sets: 4, reps: '10-12', weight: 50, done: false },
+          { id: 'm2', name: 'Incline Dumbbell Press', sets: 4, reps: '12', weight: 20, done: false },
+          { id: 'm3', name: 'Pec Deck / Cable Crossover', sets: 3, reps: '15', weight: 25, done: false },
+          { id: 'm4', name: 'Tricep Rope Pushdown', sets: 4, reps: '12-15', weight: 20, done: false },
+          { id: 'm5', name: 'Overhead Dumbbell Extension', sets: 3, reps: '12', weight: 18, done: false }
+        ]
+      },
+      2: {
+        dayName: 'मंगलवार',
+        title: 'बैक और बाइसेप्स (Back & Biceps)',
+        exercises: [
+          { id: 'tu1', name: 'Wide Grip Lat Pulldown', sets: 4, reps: '12', weight: 45, done: false },
+          { id: 'tu2', name: 'Seated Cable Row', sets: 4, reps: '10-12', weight: 50, done: false },
+          { id: 'tu3', name: 'One-Arm Dumbbell Row', sets: 3, reps: '12', weight: 22, done: false },
+          { id: 'tu4', name: 'Barbell Bicep Curl', sets: 4, reps: '10-12', weight: 25, done: false },
+          { id: 'tu5', name: 'Alternating Hammer Curl', sets: 3, reps: '12', weight: 12, done: false }
+        ]
+      },
+      3: {
+        dayName: 'बुधवार',
+        title: 'लेग्स और काव्स (Legs & Calves)',
+        exercises: [
+          { id: 'w1', name: 'Barbell Back Squat', sets: 4, reps: '8-10', weight: 70, done: false },
+          { id: 'w2', name: 'Leg Press Machine', sets: 4, reps: '12', weight: 120, done: false },
+          { id: 'w3', name: 'Leg Extension', sets: 3, reps: '15', weight: 40, done: false },
+          { id: 'w4', name: 'Lying Leg Curl (Hamstrings)', sets: 3, reps: '12', weight: 35, done: false },
+          { id: 'w5', name: 'Standing Calf Raises', sets: 4, reps: '20', weight: 40, done: false }
+        ]
+      },
+      4: {
+        dayName: 'गुरुवार',
+        title: 'शोल्डर और ट्रैप्स (Shoulders & Traps)',
+        exercises: [
+          { id: 'th1', name: 'Overhead Dumbbell Shoulder Press', sets: 4, reps: '10-12', weight: 20, done: false },
+          { id: 'th2', name: 'Dumbbell Lateral Raises', sets: 4, reps: '15', weight: 10, done: false },
+          { id: 'th3', name: 'Front Plate / Dumbbell Raise', sets: 3, reps: '12', weight: 10, done: false },
+          { id: 'th4', name: 'Rear Delt Reverse Fly / Facepull', sets: 3, reps: '15', weight: 20, done: false },
+          { id: 'th5', name: 'Heavy Dumbbell Shrugs', sets: 4, reps: '15', weight: 30, done: false }
+        ]
+      },
+      5: {
+        dayName: 'शुक्रवार',
+        title: 'आर्म्स और कोर स्पेशल (Arms & Abs)',
+        exercises: [
+          { id: 'f1', name: 'EZ-Bar Preacher Curl', sets: 4, reps: '12', weight: 25, done: false },
+          { id: 'f2', name: 'Skull Crushers (EZ-Bar)', sets: 4, reps: '12', weight: 25, done: false },
+          { id: 'f3', name: 'Incline Dumbbell Curl', sets: 3, reps: '12', weight: 12, done: false },
+          { id: 'f4', name: 'Bench Dips / Diamond Pushups', sets: 3, reps: '15', weight: 0, done: false },
+          { id: 'f5', name: 'Hanging Leg Raises & Plank', sets: 4, reps: '15', weight: 0, done: false }
+        ]
+      },
+      6: {
+        dayName: 'शनिवार',
+        title: 'फुल बॉडी कंपाउंड और कार्डियो (Compound & Conditioning)',
+        exercises: [
+          { id: 'sa1', name: 'Conventional Deadlift', sets: 4, reps: '6-8', weight: 90, done: false },
+          { id: 'sa2', name: 'Pushups / Pullups Superset', sets: 3, reps: '12', weight: 0, done: false },
+          { id: 'sa3', name: 'Walking Dumbbell Lunges', sets: 3, reps: '12', weight: 15, done: false },
+          { id: 'sa4', name: 'HIIT Treadmill / Cycling (मिनट)', sets: 1, reps: '15 Min', weight: 0, done: false }
+        ]
+      },
+      0: {
+        dayName: 'रविवार',
+        title: 'एक्टिव रिकवरी और रेस्ट डे (Rest & Stretching)',
+        exercises: [
+          { id: 'su1', name: 'फुल बॉडी मोबिलिटी और स्ट्रेचिंग', sets: 1, reps: '15 Min', weight: 0, done: false },
+          { id: 'su2', name: 'हल्की वॉक (3000+ Steps)', sets: 1, reps: '20 Min', weight: 0, done: false }
+        ]
+      }
+    };
+
+    let appState = {
+      attendance: {}, // { 'YYYY-MM-DD': { status: 'present'|'absent'|'rest', reason: '' } }
+      waterByDate: {}, // { 'YYYY-MM-DD': number }
+      workoutPlan: JSON.parse(JSON.stringify(DEFAULT_SPLIT))
+    };
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          appState.attendance = parsed.attendance || {};
+          appState.waterByDate = parsed.waterByDate || {};
+          appState.workoutPlan = parsed.workoutPlan || JSON.parse(JSON.stringify(DEFAULT_SPLIT));
+        }
+      } catch (e) {
+        console.error('State load fallback');
+      }
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      } catch (e) {
+        console.error('Storage quota warning');
+      }
+    }
+
+    function getDateKey(dateObj = new Date()) {
+      const y = dateObj.getFullYear();
+      const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+      const d = String(dateObj.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2200);
+    }
+
+    /* ==========================================================================
+       4. NAVIGATION & UI RENDERING
+       ========================================================================== */
+    let activeWorkoutDay = new Date().getDay();
+    let calYear = new Date().getFullYear();
+    let calMonth = new Date().getMonth();
+    let selectedCalDateKey = getDateKey(new Date());
+
+    function switchTab(tabId) {
+      playSynthBeep(600, 35, 0);
+      document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+
+      document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-target') === tabId);
+      });
+
+      if (tabId === 'tab-home') renderHomeDashboard();
+      if (tabId === 'tab-workout') renderWorkoutTab();
+      if (tabId === 'tab-calendar') renderCalendarTab();
+    }
+
+    /* ==========================================================================
+       5. HOME DASHBOARD & DAILY ATTENDANCE LOGIC
+       ========================================================================== */
+    function markTodayAttendance(status) {
+      playSynthBeep(status === 'present' ? 880 : 520, 80, 0);
+      const todayKey = getDateKey(new Date());
+      const existing = appState.attendance[todayKey] || {};
+      appState.attendance[todayKey] = {
+        status: status,
+        reason: status === 'absent' ? (existing.reason || '') : ''
+      };
+      saveState();
+      renderHomeDashboard();
+
+      const labels = {
+        present: 'आज की उपस्थिति: Present (जिम गए) ✅',
+        absent: 'आज की उपस्थिति: Absent (छुट्टी) ❌',
+        rest: 'आज की उपस्थिति: Rest Day (आराम) 🛌'
+      };
+      showToast(labels[status]);
+    }
+
+    function saveAbsentReason() {
+      const todayKey = getDateKey(new Date());
+      const reasonVal = document.getElementById('absent-reason-input').value.trim();
+      if (!appState.attendance[todayKey]) {
+        appState.attendance[todayKey] = { status: 'absent', reason: reasonVal };
+      } else {
+        appState.attendance[todayKey].reason = reasonVal;
+      }
+      saveState();
+      showToast('छुट्टी का कारण सेव हो गया!');
+      renderHomeDashboard();
+    }
+
+    function calculateMonthlyMetrics(year, month) {
+      let presentCount = 0;
+      let absentCount = 0;
+      let restCount = 0;
+      const prefix = `${year}-${String(month + 1).padStart(2, '0')}-`;
+
+      Object.keys(appState.attendance).forEach(k => {
+        if (k.startsWith(prefix)) {
+          const st = appState.attendance[k].status;
+          if (st === 'present') presentCount++;
+          else if (st === 'absent') absentCount++;
+          else if (st === 'rest') restCount++;
+        }
+      });
+
+      const totalTracked = presentCount + absentCount;
+      const rate = totalTracked > 0 ? Math.round((presentCount / totalTracked) * 100) : 0;
+
+      // Calculate Current Streak
+      let streak = 0;
+      let cursor = new Date();
+      for (let i = 0; i < 365; i++) {
+        const k = getDateKey(cursor);
+        const entry = appState.attendance[k];
+        if (entry && entry.status === 'present') {
+          streak++;
+        } else if (entry && entry.status === 'rest') {
+          // Rest day preserves streak
+        } else {
+          if (i > 0) break;
+        }
+        cursor.setDate(cursor.getDate() - 1);
+      }
+
+      return { presentCount, absentCount, restCount, rate, streak };
+    }
+
+    function renderHomeDashboard() {
+      const now = new Date();
+      const todayKey = getDateKey(now);
+      const hindiDays = ['रविवार', 'सोमवार', 'मंगलवार', 'बुधवार', 'गुरुवार', 'शुक्रवार', 'शनिवार'];
+      const hindiMonths = ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर'];
+
+      document.getElementById('live-date-label').textContent =
+        `${hindiDays[now.getDay()]}, ${now.getDate()} ${hindiMonths[now.getMonth()]} ${now.getFullYear()}`;
+
+      const metrics = calculateMonthlyMetrics(now.getFullYear(), now.getMonth());
+      document.getElementById('stat-present').textContent = metrics.presentCount;
+      document.getElementById('stat-absent').textContent = metrics.absentCount;
+      document.getElementById('stat-rate').textContent = `${metrics.rate}%`;
+      document.getElementById('header-streak').textContent = `${metrics.streak} दिन`;
+
+      // Highlight Today's Attendance Buttons
+      const todayEntry = appState.attendance[todayKey];
+      const btnP = document.getElementById('btn-att-present');
+      const btnA = document.getElementById('btn-att-absent');
+      const btnR = document.getElementById('btn-att-rest');
+      const reasonBox = document.getElementById('absent-reason-container');
+
+      btnP.className = 'att-btn' + (todayEntry?.status === 'present' ? ' active-present' : '');
+      btnA.className = 'att-btn' + (todayEntry?.status === 'absent' ? ' active-absent' : '');
+      btnR.className = 'att-btn' + (todayEntry?.status === 'rest' ? ' active-rest' : '');
+
+      if (todayEntry?.status === 'absent') {
+        reasonBox.classList.add('show');
+        document.getElementById('absent-reason-input').value = todayEntry.reason || '';
+        document.getElementById('today-status-sub').textContent =
+          todayEntry.reason ? `आज अनुपस्थित (कारण: ${todayEntry.reason})` : 'आज अनुपस्थित (Absent) दर्ज है';
+      } else if (todayEntry?.status === 'present') {
+        reasonBox.classList.remove('show');
+        document.getElementById('today-status-sub').textContent = 'शानदार! आज की उपस्थिति (Present) लग चुकी है';
+      } else if (todayEntry?.status === 'rest') {
+        reasonBox.classList.remove('show');
+        document.getElementById('today-status-sub').textContent = 'आज रिकवरी / विश्राम दिवस (Rest Day) है';
+      } else {
+        reasonBox.classList.remove('show');
+        document.getElementById('today-status-sub').textContent = 'आज की हाज़िरी अभी तक मार्क नहीं की गई है';
+      }
+
+      // Today's Workout Summary
+      const todayPlan = appState.workoutPlan[now.getDay()];
+      const totalEx = todayPlan.exercises.length;
+      const doneEx = todayPlan.exercises.filter(e => e.done).length;
+      const pct = totalEx > 0 ? Math.round((doneEx / totalEx) * 100) : 0;
+
+      document.getElementById('home-workout-title').textContent = `🏋️ ${todayPlan.dayName}: ${todayPlan.title}`;
+      document.getElementById('home-workout-sub').textContent = `${doneEx} / ${totalEx} एक्सरसाइज पूरी (${pct}%)`;
+      document.getElementById('home-workout-bar').style.width = `${pct}%`;
+
+      const previewNames = todayPlan.exercises.slice(0, 3).map(e => `${e.done ? '✅' : '▫️'} ${e.name}`).join(' • ');
+      document.getElementById('home-workout-preview').textContent = previewNames || 'कोई एक्सरसाइज नहीं';
+
+      // Water Count
+      const water = appState.waterByDate[todayKey] || 0;
+      document.getElementById('water-count-label').textContent = `${water} / 12 गिलास`;
+    }
+
+    function updateWater(delta) {
+      playSynthBeep(700, 40, 0);
+      const todayKey = getDateKey(new Date());
+      const current = appState.waterByDate[todayKey] || 0;
+      appState.waterByDate[todayKey] = Math.max(0, Math.min(25, current + delta));
+      saveState();
+      renderHomeDashboard();
+    }
+
+    /* ==========================================================================
+       6. WORKOUT ROUTINE & CUSTOM EXERCISE ENGINE
+       ========================================================================== */
+    function renderWorkoutTab() {
+      const dayOrder = [1, 2, 3, 4, 5, 6, 0];
+      const chipsWrap = document.getElementById('day-chips-container');
+      chipsWrap.innerHTML = '';
+
+      dayOrder.forEach(dIdx => {
+        const dayObj = appState.workoutPlan[dIdx];
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'day-chip' + (dIdx === activeWorkoutDay ? ' active' : '');
+        chip.textContent = dayObj.dayName;
+        chip.onclick = () => {
+          activeWorkoutDay = dIdx;
+          renderWorkoutTab();
+        };
+        chipsWrap.appendChild(chip);
+      });
+
+      const currentPlan = appState.workoutPlan[activeWorkoutDay];
+      const total = currentPlan.exercises.length;
+      const completed = currentPlan.exercises.filter(e => e.done).length;
+      const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+      document.getElementById('workout-day-heading').textContent = `${currentPlan.dayName}: ${currentPlan.title}`;
+      document.getElementById('workout-progress-text').textContent = `${completed} / ${total} एक्सरसाइज पूरी हुई (${pct}%)`;
+      document.getElementById('workout-progress-bar').style.width = `${pct}%`;
+
+      const listEl = document.getElementById('exercise-list-container');
+      listEl.innerHTML = '';
+
+      currentPlan.exercises.forEach((ex, index) => {
+        const card = document.createElement('div');
+        card.className = 'exercise-item' + (ex.done ? ' completed' : '');
+
+        card.innerHTML = `
+          <div class="ex-top">
+            <div class="ex-check-wrap" onclick="toggleExerciseDone(${activeWorkoutDay}, ${index})">
+              <div class="custom-checkbox">${ex.done ? '✓' : ''}</div>
+              <div class="ex-name">${ex.name}</div>
+            </div>
+            <button type="button" class="del-ex-btn" onclick="deleteExercise(${activeWorkoutDay}, ${index})" title="हटाएं">✕</button>
+          </div>
+          <div class="ex-inputs">
+            <div class="input-mini-group">
+              <label>Sets (सेट्स)</label>
+              <input type="number" value="${ex.sets}" onchange="updateExField(${activeWorkoutDay}, ${index}, 'sets', this.value)">
+            </div>
+            <div class="input-mini-group">
+              <label>Reps (रेप्स)</label>
+              <input type="text" value="${ex.reps}" onchange="updateExField(${activeWorkoutDay}, ${index}, 'reps', this.value)">
+            </div>
+            <div class="input-mini-group">
+              <label>Weight (Kg)</label>
+              <input type="number" value="${ex.weight}" onchange="updateExField(${activeWorkoutDay}, ${index}, 'weight', this.value)">
+            </div>
+          </div>
+        `;
+        listEl.appendChild(card);
+      });
+    }
+
+    function toggleExerciseDone(dayIdx, exIdx) {
+      const ex = appState.workoutPlan[dayIdx].exercises[exIdx];
+      ex.done = !ex.done;
+      playSynthBeep(ex.done ? 940 : 480, 60, 0);
+      saveState();
+      renderWorkoutTab();
+    }
+
+    function updateExField(dayIdx, exIdx, field, val) {
+      appState.workoutPlan[dayIdx].exercises[exIdx][field] = val;
+      saveState();
+    }
+
+    function deleteExercise(dayIdx, exIdx) {
+      appState.workoutPlan[dayIdx].exercises.splice(exIdx, 1);
+      saveState();
+      renderWorkoutTab();
+      showToast('एक्सरसाइज हटाई गई');
+    }
+
+    function addCustomExercise() {
+      const nameInput = document.getElementById('new-ex-name');
+      const setsInput = document.getElementById('new-ex-sets');
+      const repsInput = document.getElementById('new-ex-reps');
+      const weightInput = document.getElementById('new-ex-weight');
+
+      const name = nameInput.value.trim();
+      if (!name) {
+        showToast('कृपया एक्सरसाइज का नाम लिखें');
+        return;
+      }
+
+      appState.workoutPlan[activeWorkoutDay].exercises.push({
+        id: 'ex_' + Date.now(),
+        name: name,
+        sets: parseInt(setsInput.value, 10) || 3,
+        reps: repsInput.value.trim() || '12',
+        weight: parseFloat(weightInput.value) || 0,
+        done: false
+      });
+
+      nameInput.value = '';
+      saveState();
+      renderWorkoutTab();
+      showToast('नई एक्सरसाइज जोड़ी गई!');
+    }
+
+    function resetDayCompletion() {
+      appState.workoutPlan[activeWorkoutDay].exercises.forEach(e => e.done = false);
+      saveState();
+      renderWorkoutTab();
+      showToast('सभी टिक रीसेट किए गए');
+    }
+
+    function finishWorkoutSession() {
+      markTodayAttendance('present');
+      switchTab('tab-home');
+    }
+
+    /* ==========================================================================
+       7. INTERACTIVE MONTHLY ATTENDANCE CALENDAR
+       ========================================================================== */
+    function changeMonth(delta) {
+      calMonth += delta;
+      if (calMonth > 11) { calMonth = 0; calYear++; }
+      if (calMonth < 0) { calMonth = 11; calYear--; }
+      renderCalendarTab();
+    }
+
+    function renderCalendarTab() {
+      const hindiMonths = ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर'];
+      document.getElementById('cal-month-title').textContent = `${hindiMonths[calMonth]} ${calYear}`;
+
+      const grid = document.getElementById('calendar-days-grid');
+      grid.innerHTML = '';
+
+      const firstDay = new Date(calYear, calMonth, 1).getDay();
+      const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+      const todayKey = getDateKey(new Date());
+
+      for (let i = 0; i < firstDay; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.className = 'cal-day empty';
+        grid.appendChild(emptyCell);
+      }
+
+      for (let d = 1; d <= daysInMonth; d++) {
+        const dKey = `${calYear}-${String(calMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+        const record = appState.attendance[dKey];
+        const cell = document.createElement('div');
+
+        let classes = 'cal-day';
+        if (dKey === todayKey) classes += ' today';
+        if (record?.status === 'present') classes += ' status-present';
+        if (record?.status === 'absent') classes += ' status-absent';
+        if (record?.status === 'rest') classes += ' status-rest';
+
+        cell.className = classes;
+        cell.innerHTML = `<span>${d}</span>`;
+        cell.onclick = () => {
+          selectedCalDateKey = dKey;
+          updateSelectedDateCard();
+        };
+        grid.appendChild(cell);
+      }
+
+      updateSelectedDateCard();
+    }
+
+    function updateSelectedDateCard() {
+      const record = appState.attendance[selectedCalDateKey];
+      document.getElementById('selected-date-heading').textContent = `तारीख: ${selectedCalDateKey}`;
+      let statusTxt = 'कोई स्टेटस दर्ज नहीं है';
+      if (record?.status === 'present') statusTxt = 'स्टेटस: उपस्थित (Present) ✅';
+      if (record?.status === 'absent') statusTxt = `स्टेटस: अनुपस्थित (Absent) ❌ ${record.reason ? '— ' + record.reason : ''}`;
+      if (record?.status === 'rest') statusTxt = 'स्टेटस: विश्राम दिवस (Rest Day) 🛌';
+      document.getElementById('selected-date-reason').textContent = statusTxt;
+    }
+
+    function setCalendarDateStatus(status) {
+      playSynthBeep(760, 60, 0);
+      appState.attendance[selectedCalDateKey] = { status: status, reason: '' };
+      saveState();
+      renderCalendarTab();
+      renderHomeDashboard();
+      showToast(`${selectedCalDateKey}: ${status.toUpperCase()} सेव किया गया`);
+    }
+
+    /* ==========================================================================
+       8. REST TIMER, 1RM CALCULATOR & JSON BACKUP
+       ========================================================================== */
+    let timerDuration = 60;
+    let timerRemaining = 60;
+    let timerInterval = null;
+
+    function formatTime(sec) {
+      const m = String(Math.floor(sec / 60)).padStart(2, '0');
+      const s = String(sec % 60).padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    function setTimerSeconds(sec) {
+      playSynthBeep(660, 40, 0);
+      clearInterval(timerInterval);
+      timerInterval = null;
+      timerDuration = sec;
+      timerRemaining = sec;
+      document.getElementById('timer-readout').textContent = formatTime(timerRemaining);
+      document.getElementById('timer-start-btn').textContent = '▶ शुरू करें';
+    }
+
+    function toggleTimer() {
+      // Unlock Web Audio Context immediately on user tap
+      playSynthBeep(880, 50, 0);
+
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        document.getElementById('timer-start-btn').textContent = '▶ जारी रखें';
+      } else {
+        if (timerRemaining <= 0) timerRemaining = timerDuration;
+        document.getElementById('timer-start-btn').textContent = '⏸ रोकें';
+        timerInterval = setInterval(() => {
+          timerRemaining--;
+          document.getElementById('timer-readout').textContent = formatTime(timerRemaining);
+          if (timerRemaining <= 0) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            document.getElementById('timer-start-btn').textContent = '▶ शुरू करें';
+            triggerTimerAlarmPattern();
+            showToast('⏰ रेस्ट का समय समाप्त! अगला सेट लगाएं!');
+          }
+        }, 1000);
+      }
+    }
+
+    function resetTimer() {
+      setTimerSeconds(timerDuration);
+    }
+
+    function calcOneRepMax() {
+      const w = parseFloat(document.getElementById('rm-weight').value) || 0;
+      const r = parseFloat(document.getElementById('rm-reps').value) || 0;
+      if (w > 0 && r > 0) {
+        // Epley Formula: 1RM = Weight * (1 + Reps/30)
+        const max = Math.round(w * (1 + r / 30));
+        document.getElementById('rm-result').textContent = `${max} Kg`;
+      } else {
+        document.getElementById('rm-result').textContent = '0 Kg';
+      }
+    }
+
+    function exportBackupData() {
+      const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(appState));
+      const dlAnchor = document.createElement('a');
+      dlAnchor.setAttribute('href', dataStr);
+      dlAnchor.setAttribute('download', `Dilkhush_Gym_Backup_${getDateKey(new Date())}.json`);
+      document.body.appendChild(dlAnchor);
+      dlAnchor.click();
+      dlAnchor.remove();
+      showToast('बैकअप फ़ाइल डाउनलोड हो गई!');
+    }
+
+    function importBackupData(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const imported = JSON.parse(e.target.result);
+          if (imported.attendance && imported.workoutPlan) {
+            appState = imported;
+            saveState();
+            renderHomeDashboard();
+            showToast('डेटा सफलतापूर्वक रीस्टोर हो गया!');
+          }
+        } catch (err) {
+          showToast('अमान्य बैकअप फ़ाइल');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // Initialize App on Load
+    window.addEventListener('DOMContentLoaded', () => {
+      loadState();
+      renderHomeDashboard();
+    });
+  </script>
+</body>
+</html>
